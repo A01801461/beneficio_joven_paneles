@@ -1,0 +1,55 @@
+.contenedor-tabla{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tabla{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.contenedor-botones{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.agregar-btn {
+    background: linear-gradient(to right, #7cbcde, #55408a);
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 25px;
+    transition: ease all 0.3s;
+}
+
+.agregar-btn:hover {
+    background: linear-gradient(to right, #70b1d4, #49337e);
+    scale: 1.05;
+}
+
+table{ 
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 30px;
+}
+
+th, td {
+    border: 1px solid #9f9f9f;
+    padding: 8px;
+    max-width: 180px;
+    word-wrap: break-word;      /* Rompe palabras largas */
+    word-break: break-word; 
+}
+
+th { background-color: #d5d5d5; }

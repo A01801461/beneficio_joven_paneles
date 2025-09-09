@@ -82,6 +82,7 @@ input:focus {
     cursor: pointer;
     transition: background-color 0.3s;
     margin-top: 25px;
+    transition: ease all 0.3s;
 }
 
 a{
@@ -91,6 +92,7 @@ a{
 
 .btn:hover {
     background: linear-gradient(to right, #70b1d4, #49337e);
+    scale: 1.05;
 }
 
 .form-footer {
