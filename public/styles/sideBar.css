@@ -25,11 +25,12 @@ body {
     left: 0;         /* Pegada a la izquierda */
     top: 0;         /* Pegada a la izquierda */
     height: 100%;
-    width: 250px;
+    width: 300px;
     background: linear-gradient(to bottom, #7cbcde, #55408a);
     align-items: center;
     justify-content: space-evenly;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    padding-bottom: 175px;
 }
 
 .botones-side{
@@ -43,11 +44,13 @@ body {
 
 .logo{
     width: 80px;
-    margin-left: 35px;
+    margin-left: 47px;
 }
 
 .titulo{
     color: white;
+    font-size: 1.2rem;
+    margin-top: 8px;
 }
 
 .side-btn{
@@ -57,11 +60,15 @@ body {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    width: 130px;
+    width: 160px;
     text-align: center;
     text-decoration: none;
     transition: all 0.3s ease;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    justify-content: space-between;
 }
 
 .selected-side-btn{
@@ -71,11 +78,15 @@ body {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    width: 130px;
+    width: 160px;
     text-align: center;
     text-decoration: none;
     transition: all 0.3s ease;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    justify-content: space-between;
 }
 
 .side-btn:hover{
