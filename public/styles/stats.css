@@ -36,4 +36,46 @@
     justify-content: center;
     align-items: center;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    transition: ease all 0.3s;
+}
+        
+.stat:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+.stat::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+}
+
+.stat-icon {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+}
+
+.stat:nth-child(1) .stat-icon {
+    color: #ff6b6b;
+}
+
+.stat:nth-child(2) .stat-icon {
+    color: #4ecdc4;
+}
+
+.stat-value {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 1.2rem;
+    color: #666;
+    text-align: center;
+    padding: 0 20px;
 }
