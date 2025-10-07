@@ -1,85 +1,112 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administradores</title>
-    <link rel="stylesheet" href="styles/sideBar.css">
-    <link rel="stylesheet" href="styles/cupones.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="shortcut icon" href="images/iconoWeb.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Administradores</title>
+  <link rel="stylesheet" href="styles/sideBar.css">
+  <link rel="stylesheet" href="styles/cupones.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="shortcut icon" href="images/iconoWeb.png">
 </head>
 <body>
-    <div class="main-container">
-        <div class="side-bar">
-            <div class="logo-container">
-                <img src="images/logoSinFondo.png" alt="logo Beneficio Joven" class="logo">
-                <p class="titulo"><strong>BENEFICIO</strong> JOVEN</p>
-                <p class="titulo">Administradores</p>
-            </div>
-            <div class="botones-side">
-                <a class="side-btn" href="statsAdmins.html">
-                <i class="fas fa-chart-line"></i> estadisticas
-                </a>
-                <a class="side-btn" href="usersAdmins.html">
-                <i class="fas fa-users"></i> usuarios
-                </a>
-                <a class="selected-side-btn" href="cuponsAdmins.html">
-                <i class="fas fa-ticket-alt"></i> cupones
-                </a>
-                <a class="side-btn" href="ayudaAdmins.html">
-                <i class="fas fa-question-circle"></i> ayuda
-                </a>
-                <a class="side-btn" href="index.html">
-                <i class="fas fa-sign-out-alt"></i> salir
-                </a>
-            </div>
-        </div>
-        <div class="contenido-pagina">
-            <h2>Administrar cupones</h2>
-            <div class="contenedor-tabla">
-                <table>
-                    <tr>
-                        <th>ID</th>
-                        <th>codigo</th>
-                        <th>titulo</th>
-                        <th>comercio</th>
-                        <th>descuento</th>
-                        <th>descripción</th>
-                        <th>valido de</th>
-                        <th>valido hasta</th>
-                        <th>limite</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>2354</td>
-                        <td>2x1 engtre semana</td>
-                        <td>Six Flags</td>
-                        <td>2x1 en entradas, valido lunes - viernes</td>
-                        <td>Six Flags te regala un 2x1 en tus entradas de lunes a viernes</td>
-                        <td>10.09.2025</td>
-                        <td>31.12.2025</td>
-                        <td>1 uso</td>
-                        <td><button class="eliminar-btn"><i class="fas fa-trash-alt"></i></button></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>4691</td>
-                        <td>20% de descuento</td>
-                        <td>OXXO</td>
-                        <td>20% de descuento en compras mayores a 150 MXN</td>
-                        <td>Te descontamos 20% en la compra minima de 150!</td>
-                        <td>10.09.2025</td>
-                        <td>10.09.2026</td>
-                        <td>2 usos</td>
-                        <td><button class="eliminar-btn"><i class="fas fa-trash-alt"></i></button></td>
-                    </tr>
-                </table>
-                <div class="contenedor-botones">
-                    <a href=""><button class="agregar-btn">agregar cupón</button></a>
-                </div>
-            </div>
-        </div>
+  <div class="main-container">
+    <div class="side-bar">
+      <div class="logo-container">
+        <img src="images/logoSinFondo.png" alt="logo Beneficio Joven" class="logo">
+        <p class="titulo"><strong>BENEFICIO</strong> JOVEN</p>
+        <p class="titulo">Administradores</p>
+      </div>
+      <div class="botones-side">
+        <a class="side-btn" href="statsAdmins.html">
+          <i class="fas fa-chart-line"></i> estadisticas
+        </a>
+        <a class="side-btn" href="usersAdmins.html">
+          <i class="fas fa-users"></i> usuarios
+        </a>
+        <a class="selected-side-btn" href="cuponsAdmins.html">
+          <i class="fas fa-ticket-alt"></i> cupones
+        </a>
+        <a class="side-btn" href="ayudaAdmins.html">
+          <i class="fas fa-question-circle"></i> ayuda
+        </a>
+        <a class="side-btn" href="index.html">
+          <i class="fas fa-sign-out-alt"></i> salir
+        </a>
+      </div>
     </div>
+
+    <div class="contenido-pagina">
+      <h2>Administrar cupones</h2>
+      <div class="contenedor-tabla">
+        <table id="cuponesTable">
+          <tr>
+            <th>ID</th>
+            <th>codigo</th>
+            <th>titulo</th>
+            <th>comercio</th>
+            <th>descuento</th>
+            <th>descripción</th>
+            <th>valido de</th>
+            <th>valido hasta</th>
+            <th>limite</th>
+            <th>acciones</th>
+          </tr>
+          <!-- Las filas se llenan dinámicamente con JS -->
+        </table>
+
+        <div class="contenedor-botones">
+          <a href="#"><button class="agregar-btn">agregar cupón</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const table = document.getElementById("cuponesTable");
+
+      try {
+        // 🔗 Conecta al backend: ajusta la IP/puerto según tu entorno
+        const response = await fetch('http://localhost:4000/beneficioJoven/coupons');
+        if (!response.ok) throw new Error("Error al obtener los cupones");
+
+        const coupons = await response.json();
+
+        // Si no hay cupones
+        if (coupons.length === 0) {
+          const row = document.createElement("tr");
+          row.innerHTML = `<td colspan="10" style="text-align:center;">No hay cupones registrados</td>`;
+          table.appendChild(row);
+          return;
+        }
+
+        // Inserta cada cupón en la tabla
+        coupons.forEach(coupon => {
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td>${coupon.id}</td>
+    <td>${coupon.code}</td>
+    <td>${coupon.title}</td>
+    <td>${coupon.merchant_id}</td>
+    <td>${coupon.discount_type}</td>
+    <td>${coupon.description}</td>
+    <td>${new Date(coupon.valid_from).toLocaleDateString()}</td>
+    <td>${new Date(coupon.valid_until).toLocaleDateString()}</td>
+    <td>${coupon.usage_limit}</td>
+    <td><button class="eliminar-btn"><i class="fas fa-trash-alt"></i></button></td>
+  `;
+  table.appendChild(row);
+});
+
+
+      } catch (error) {
+        console.error("Error al cargar cupones:", error);
+        const row = document.createElement("tr");
+        row.innerHTML = `<td colspan="10" style="text-align:center; color:red;">Error al cargar los cupones</td>`;
+        table.appendChild(row);
+      }
+    });
+  </script>
 </body>
 </html>

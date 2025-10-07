@@ -1,90 +1,212 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administradores</title>
-    <link rel="stylesheet" href="styles/sideBar.css">
-    <link rel="stylesheet" href="styles/cupones.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="shortcut icon" href="images/iconoWeb.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de Usuarios</title>
+  <link rel="stylesheet" href="styles/sideBar.css" />
+  <link rel="stylesheet" href="styles/users.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+  <link rel="shortcut icon" href="images/iconoWeb.png" />
+  <style>
+    .filtro-container {
+      display: flex;
+      justify-content: flex-end;
+      margin: 15px 30px;
+    }
+    select {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    table {
+      width: 90%;
+      margin: auto;
+      border-collapse: collapse;
+      text-align: center;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+    th {
+      background-color: #f5f5f5;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="main-container">
-        <div class="side-bar">
-            <div class="logo-container">
-                <img src="images/logoSinFondo.png" alt="logo Beneficio Joven" class="logo">
-                <p class="titulo"><strong>BENEFICIO</strong> JOVEN</p>
-                <p class="titulo">Administradores</p>
-            </div>
-            <div class="botones-side">
-                <a class="side-btn" href="statsAdmins.html">
-                <i class="fas fa-chart-line"></i> estadisticas
-                </a>
-                <a class="selected-side-btn" href="usersAdmins.html">
-                <i class="fas fa-users"></i> usuarios
-                </a>
-                <a class="side-btn" href="cuponsAdmins.html">
-                <i class="fas fa-ticket-alt"></i> cupones
-                </a>
-                <a class="side-btn" href="ayudaAdmins.html">
-                <i class="fas fa-question-circle"></i> ayuda
-                </a>
-                <a class="side-btn" href="index.html">
-                <i class="fas fa-sign-out-alt"></i> salir
-                </a>
-            </div>
-        </div>
-        <div class="contenido-pagina">
-            <h2>Administrar usuarios</h2>
-            <div class="contenedor-tabla">
-                <table>
-                    <tr>
-                        <th>ID</th>
-                        <th>role</th>
-                        <th>email</th>
-                        <th>password</th>
-                        <th>created at</th>
-                        <th>full name</th>
-                        <th>super admin</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>admin</td>
-                        <td>isaacabud@gmail.com</td>
-                        <td>$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi</td>
-                        <td>09.09.2025</td>
-                        <td>Isaac Abud León</td>
-                        <td>yes</td>
-                        <td><button class="eliminar-btn"><i class="fas fa-trash-alt"></i></button></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>admin</td>
-                        <td>astrid@gmail.com</td>
-                        <td>$2y$10$Ll9bxgWgVJxN3M4M5N6O7P8Q9R0S1T2U3V4W5X6Y7Z8a9b0c1d2e3f</td>
-                        <td>09.09.2025</td>
-                        <td>Astrid Guadalupe Navarro Gómez</td>
-                        <td>no</td>
-                        <td><button class="eliminar-btn"><i class="fas fa-trash-alt"></i></button></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>admin</td>
-                        <td>david@gmail.com</td>
-                        <td>$2y$10$Bx8LwSMHZD3.bqAhziJdQeLxLRbTRRvLuEm2M3CMH/F3C1/rVhOeG</td>
-                        <td>09.09.2025</td>
-                        <td>David Alejandro Pérez Tabares</td>
-                        <td>no</td>
-                        <td><button class="eliminar-btn"><i class="fas fa-trash-alt"></i></button></td>
-                    </tr>
-                </table>
-                <div class="contenedor-botones">
-                    <a href=""><button class="agregar-btn">agregar administrador</button></a>
-                    <a href=""><button class="agregar-btn">agregar comercio</button></a>
-                </div>
-            </div>
-        </div>
+  <div class="main-container">
+    <div class="side-bar">
+      <div class="logo-container">
+        <img
+          src="images/logoSinFondo.png"
+          alt="logo Beneficio Joven"
+          class="logo"
+        />
+        <p class="titulo"><strong>BENEFICIO</strong> JOVEN</p>
+        <p class="titulo">Administradores</p>
+      </div>
+      <div class="botones-side">
+        <a class="side-btn" href="statsAdmins.html">
+          <i class="fas fa-chart-line"></i> estadísticas
+        </a>
+        <a class="selected-side-btn" href="usersAdmins.html">
+          <i class="fas fa-users"></i> usuarios
+        </a>
+        <a class="side-btn" href="cuponsAdmins.html">
+          <i class="fas fa-ticket-alt"></i> cupones
+        </a>
+        <a class="side-btn" href="ayudaAdmins.html">
+          <i class="fas fa-question-circle"></i> ayuda
+        </a>
+        <a class="side-btn" href="index.html">
+          <i class="fas fa-sign-out-alt"></i> salir
+        </a>
+      </div>
     </div>
+
+    <div class="contenido-pagina">
+      <h2>Administrar Usuarios</h2>
+
+      <!-- 🔽 Selector de filtro -->
+      <div class="filtro-container">
+        <select id="filtro-usuarios">
+          <option value="all">Todos los usuarios</option>
+          <option value="jovenes">Jóvenes</option>
+          <option value="merchants">Comercios</option>
+          <option value="admins">Administradores</option>
+        </select>
+      </div>
+
+      <!-- 🔽 Tabla -->
+      <div class="contenedor-tabla">
+        <table>
+          <thead>
+            <tr id="encabezadoTabla">
+              <th>ID</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Fecha de creación</th>
+            </tr>
+          </thead>
+          <tbody id="tablaUsuarios">
+            <tr><td colspan="4">Cargando usuarios...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tablaUsuarios = document.getElementById("tablaUsuarios");
+    const encabezadoTabla = document.getElementById("encabezadoTabla");
+    const filtroSelect = document.getElementById("filtro-usuarios");
+
+    async function cargarUsuarios(tipo = "all") {
+      let url;
+      switch (tipo) {
+        case "jovenes":
+          url = "http://localhost:4000/beneficioJoven/jovenes";
+          break;
+        case "merchants":
+          url = "http://localhost:4000/beneficioJoven/merchants";
+          break;
+        case "admins":
+          url = "http://localhost:4000/beneficioJoven/admins";
+          break;
+        default:
+          url = "http://localhost:4000/beneficioJoven/allusers";
+      }
+
+      tablaUsuarios.innerHTML = "<tr><td colspan='4'>Cargando usuarios...</td></tr>";
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Error al obtener datos");
+        const data = await response.json();
+
+        // Limpia encabezados anteriores
+        encabezadoTabla.innerHTML = "";
+
+        // Ajusta columnas según el tipo
+        let columnas = [];
+        if (tipo === "all") {
+          columnas = ["ID", "Email", "Rol", "Fecha de creación"];
+        } else if (tipo === "jovenes") {
+          columnas = ["ID", "Nombre Completo", "CURP", "Día de nacimiento", "Municipio"];
+        } else if (tipo === "merchants") {
+          columnas = ["ID", "Nombre del comercio", "Descripcion", "Logo", "Tipo de comercio"];
+        } else if (tipo === "admins") {
+          columnas = ["ID", "Nombre", "Nivel de acceso"];
+        }
+
+        // Crea encabezados dinámicamente
+        columnas.forEach(col => {
+          const th = document.createElement("th");
+          th.textContent = col;
+          encabezadoTabla.appendChild(th);
+        });
+
+        // Llena filas según el tipo
+        if (data.length === 0) {
+          tablaUsuarios.innerHTML = `<tr><td colspan="${columnas.length}">No hay datos</td></tr>`;
+          return;
+        }
+
+        tablaUsuarios.innerHTML = data.map(u => {
+          if (tipo === "all") {
+            return `
+              <tr>
+                <td>${u.id}</td>
+                <td>${u.email}</td>
+                <td>${u.role}</td>
+                <td>${u.password}</td>
+                <td>${new Date(u.created_at).toLocaleString()}</td>
+              </tr>`;
+          } else if (tipo === "jovenes") {
+            return `
+              <tr>
+                <td>${u.user_id}</td>
+                <td>${u.full_name || u.name || "-"}</td>
+                <td>${u.curp || "-"}</td>
+                <td>${u.birth_date || u.email || "-"}</td>
+                <td>${u.municipality || "-"}</td>
+              </tr>`;
+          } else if (tipo === "merchants") {
+            return `
+              <tr>
+                <td>${u.user_id}</td>
+                <td>${u.merchant_name}</td>
+                <td>${u.description}</td>
+                <td>${u.logo_url}</td>
+                <td>${u.merchant_type}</td>
+              </tr>`;
+          } else if (tipo === "admins") {
+            return `
+              <tr>
+                <td>${u.user_id}</td>
+                <td>${u.full_name}</td>
+                <td>${u.is_super_admin}</td>
+              </tr>`;
+          }
+        }).join("");
+      } catch (error) {
+        console.error(error);
+        tablaUsuarios.innerHTML = "<tr><td colspan='4'>Error al cargar datos</td></tr>";
+      }
+    }
+
+    filtroSelect.addEventListener("change", (e) => {
+      cargarUsuarios(e.target.value);
+    });
+
+    cargarUsuarios();
+  </script>
 </body>
 </html>
