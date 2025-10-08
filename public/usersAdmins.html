@@ -5,18 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Panel de Usuarios</title>
   <link rel="stylesheet" href="styles/sideBar.css" />
-  <link rel="stylesheet" href="styles/users.css" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="shortcut icon" href="images/iconoWeb.png" />
   <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .contenido-pagina {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #333;
+    }
+
     .filtro-container {
       display: flex;
       justify-content: flex-end;
-      margin: 15px 30px;
+      width: 90%;
+      margin-bottom: 15px;
     }
+
+    .filtro-busqueda {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
     select {
       padding: 8px 12px;
       border-radius: 8px;
@@ -24,18 +48,75 @@
       font-size: 14px;
       cursor: pointer;
     }
-    table {
+
+    .input-icon {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon i {
+      position: absolute;
+      left: 10px;
+      color: #888;
+    }
+
+    #buscador {
+      padding: 8px 12px 8px 32px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      width: 250px;
+      transition: all 0.2s ease;
+    }
+
+    #buscador:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+      outline: none;
+    }
+
+    .contenedor-tabla {
+      background-color: white;
       width: 90%;
-      margin: auto;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
       border-collapse: collapse;
       text-align: center;
+      table-layout: auto;
     }
+
     th, td {
-      padding: 10px;
-      border-bottom: 1px solid #ccc;
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      font-size: 14px;
+      word-wrap: break-word;
     }
+
     th {
       background-color: #f5f5f5;
+      color: #333;
+    }
+
+    tr:hover {
+      background-color: #f1f7ff;
+    }
+
+    tr.destacado td {
+      background-color: #e7f3ff;
+    }
+
+    td img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 8px;
     }
   </style>
 </head>
@@ -44,44 +125,37 @@
   <div class="main-container">
     <div class="side-bar">
       <div class="logo-container">
-        <img
-          src="images/logoSinFondo.png"
-          alt="logo Beneficio Joven"
-          class="logo"
-        />
+        <img src="images/logoSinFondo.png" alt="logo Beneficio Joven" class="logo" />
         <p class="titulo"><strong>BENEFICIO</strong> JOVEN</p>
         <p class="titulo">Administradores</p>
       </div>
       <div class="botones-side">
-        <a class="side-btn" href="statsAdmins.html">
-          <i class="fas fa-chart-line"></i> estadísticas
-        </a>
-        <a class="selected-side-btn" href="usersAdmins.html">
-          <i class="fas fa-users"></i> usuarios
-        </a>
-        <a class="side-btn" href="cuponsAdmins.html">
-          <i class="fas fa-ticket-alt"></i> cupones
-        </a>
-        <a class="side-btn" href="ayudaAdmins.html">
-          <i class="fas fa-question-circle"></i> ayuda
-        </a>
-        <a class="side-btn" href="index.html">
-          <i class="fas fa-sign-out-alt"></i> salir
-        </a>
+        <a class="side-btn" href="statsAdmins.html"><i class="fas fa-chart-line"></i> estadísticas</a>
+        <a class="selected-side-btn" href="usersAdmins.html"><i class="fas fa-users"></i> usuarios</a>
+        <a class="side-btn" href="cuponsAdmins.html"><i class="fas fa-ticket-alt"></i> cupones</a>
+        <a class="side-btn" href="ayudaAdmins.html"><i class="fas fa-question-circle"></i> ayuda</a>
+        <a class="side-btn" href="index.html"><i class="fas fa-sign-out-alt"></i> salir</a>
       </div>
     </div>
 
     <div class="contenido-pagina">
       <h2>Administrar Usuarios</h2>
 
-      <!-- 🔽 Selector de filtro -->
+      <!-- 🔽 Filtros -->
       <div class="filtro-container">
-        <select id="filtro-usuarios">
-          <option value="all">Todos los usuarios</option>
-          <option value="jovenes">Jóvenes</option>
-          <option value="merchants">Comercios</option>
-          <option value="admins">Administradores</option>
-        </select>
+        <div class="filtro-busqueda">
+          <select id="filtro-usuarios">
+            <option value="all">Todos los usuarios</option>
+            <option value="jovenes">Jóvenes</option>
+            <option value="merchants">Comercios</option>
+            <option value="admins">Administradores</option>
+          </select>
+
+          <div class="input-icon">
+            <i class="fas fa-search"></i>
+            <input type="text" id="buscador" placeholder="Buscar usuario..." />
+          </div>
+        </div>
       </div>
 
       <!-- 🔽 Tabla -->
@@ -107,6 +181,7 @@
     const tablaUsuarios = document.getElementById("tablaUsuarios");
     const encabezadoTabla = document.getElementById("encabezadoTabla");
     const filtroSelect = document.getElementById("filtro-usuarios");
+    let usuariosActuales = [];
 
     async function cargarUsuarios(tipo = "all") {
       let url;
@@ -130,77 +205,93 @@
         const response = await fetch(url);
         if (!response.ok) throw new Error("Error al obtener datos");
         const data = await response.json();
+        usuariosActuales = data;
 
-        // Limpia encabezados anteriores
-        encabezadoTabla.innerHTML = "";
-
-        // Ajusta columnas según el tipo
-        let columnas = [];
-        if (tipo === "all") {
-          columnas = ["ID", "Email", "Rol", "Fecha de creación"];
-        } else if (tipo === "jovenes") {
-          columnas = ["ID", "Nombre Completo", "CURP", "Día de nacimiento", "Municipio"];
-        } else if (tipo === "merchants") {
-          columnas = ["ID", "Nombre del comercio", "Descripcion", "Logo", "Tipo de comercio"];
-        } else if (tipo === "admins") {
-          columnas = ["ID", "Nombre", "Nivel de acceso"];
-        }
-
-        // Crea encabezados dinámicamente
-        columnas.forEach(col => {
-          const th = document.createElement("th");
-          th.textContent = col;
-          encabezadoTabla.appendChild(th);
-        });
-
-        // Llena filas según el tipo
-        if (data.length === 0) {
-          tablaUsuarios.innerHTML = `<tr><td colspan="${columnas.length}">No hay datos</td></tr>`;
-          return;
-        }
-
-        tablaUsuarios.innerHTML = data.map(u => {
-          if (tipo === "all") {
-            return `
-              <tr>
-                <td>${u.id}</td>
-                <td>${u.email}</td>
-                <td>${u.role}</td>
-                <td>${u.password}</td>
-                <td>${new Date(u.created_at).toLocaleString()}</td>
-              </tr>`;
-          } else if (tipo === "jovenes") {
-            return `
-              <tr>
-                <td>${u.user_id}</td>
-                <td>${u.full_name || u.name || "-"}</td>
-                <td>${u.curp || "-"}</td>
-                <td>${u.birth_date || u.email || "-"}</td>
-                <td>${u.municipality || "-"}</td>
-              </tr>`;
-          } else if (tipo === "merchants") {
-            return `
-              <tr>
-                <td>${u.user_id}</td>
-                <td>${u.merchant_name}</td>
-                <td>${u.description}</td>
-                <td>${u.logo_url}</td>
-                <td>${u.merchant_type}</td>
-              </tr>`;
-          } else if (tipo === "admins") {
-            return `
-              <tr>
-                <td>${u.user_id}</td>
-                <td>${u.full_name}</td>
-                <td>${u.is_super_admin}</td>
-              </tr>`;
-          }
-        }).join("");
+        renderTabla(data, tipo);
       } catch (error) {
         console.error(error);
         tablaUsuarios.innerHTML = "<tr><td colspan='4'>Error al cargar datos</td></tr>";
       }
     }
+
+    function renderTabla(data, tipo) {
+      encabezadoTabla.innerHTML = "";
+      let columnas = [];
+
+      if (tipo === "all") {
+        columnas = ["ID", "Email", "Rol", "Fecha de creación"];
+      } else if (tipo === "jovenes") {
+        columnas = ["ID", "Nombre Completo", "CURP", "Nacimiento", "Municipio"];
+      } else if (tipo === "merchants") {
+        columnas = ["ID", "Comercio", "Descripción", "Logo", "Tipo"];
+      } else if (tipo === "admins") {
+        columnas = ["ID", "Nombre", "Nivel de acceso"];
+      }
+
+      columnas.forEach(col => {
+        const th = document.createElement("th");
+        th.textContent = col;
+        encabezadoTabla.appendChild(th);
+      });
+
+      if (data.length === 0) {
+        tablaUsuarios.innerHTML = `<tr><td colspan="${columnas.length}" style="padding:20px;">🔍 No se encontraron resultados</td></tr>`;
+        return;
+      }
+
+      tablaUsuarios.innerHTML = data.map(u => {
+        if (tipo === "all") {
+          return `<tr>
+              <td>${u.id}</td>
+              
+              <td>${u.email}</td>
+              <td>${u.role}</td>
+              <td>${new Date(u.created_at).toLocaleString()}</td>
+            </tr>`;
+        } else if (tipo === "jovenes") {
+          return `<tr>
+              <td>${u.user_id}</td>
+              <td>${u.full_name || "-"}</td>
+              <td>${u.curp || "-"}</td>
+              <td>${u.birth_date || "-"}</td>
+              <td>${u.municipality || "-"}</td>
+            </tr>`;
+        } else if (tipo === "merchants") {
+          return `<tr>
+              <td>${u.user_id}</td>
+              <td>${u.merchant_name}</td>
+              <td>${u.description}</td>
+              <td><img src="${u.logo_url}" alt="logo"></td>
+              <td>${u.merchant_type}</td>
+            </tr>`;
+        } else if (tipo === "admins") {
+          return `<tr>
+              <td>${u.user_id}</td>
+              <td>${u.full_name}</td>
+              <td>${u.is_super_admin}</td>
+            </tr>`;
+        }
+      }).join("");
+    }
+
+    document.getElementById("buscador").addEventListener("input", (e) => {
+      const texto = e.target.value.toLowerCase();
+      const tipo = filtroSelect.value;
+      const filtrados = usuariosActuales.filter((u) =>
+        Object.values(u).some((val) =>
+          String(val).toLowerCase().includes(texto)
+        )
+      );
+
+      if (texto.trim() !== "") {
+        renderTabla(filtrados, tipo);
+        document.querySelectorAll("tbody tr").forEach(tr => {
+          tr.classList.add("destacado");
+        });
+      } else {
+        renderTabla(usuariosActuales, tipo);
+      }
+    });
 
     filtroSelect.addEventListener("change", (e) => {
       cargarUsuarios(e.target.value);
@@ -210,3 +301,4 @@
   </script>
 </body>
 </html>
+    

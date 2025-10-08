@@ -8,6 +8,105 @@
   <link rel="stylesheet" href="styles/cupones.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="shortcut icon" href="images/iconoWeb.png">
+
+  <style>
+    .contenido-pagina {
+      flex: 1;
+      padding: 31px;
+    }
+
+    .contenido-pagina h2 {
+      text-align: center;
+      margin-bottom: 18px;
+      color: #333;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .contenedor-tabla {
+      width: 95%;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 16px;
+      overflow-x: auto;
+    }
+
+    #cuponesTable {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 14px;
+      table-layout: auto;
+      min-width: 900px;
+    }
+
+    /* Encabezados */
+    #cuponesTable th {
+      background-color: #f5f5f5;
+      color: #333;
+      font-weight: 700;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      padding: 12px 10px;
+      border-left: 1px solid #e0e0e0;
+    }
+
+    /* Celdas del cuerpo */
+    #cuponesTable td {
+      padding: 12px 10px;
+      vertical-align: middle;
+      word-break: break-word;
+    }
+
+    #cuponesTable td:nth-child(5) {
+      max-width: 360px;
+      text-align: left;
+      padding-left: 14px;
+    }
+
+    .contenedor-botones {
+      display: flex;
+      justify-content: center;
+      margin-top: 14px;
+    }
+    .agregar-btn {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .agregar-btn:hover { background-color: #2980b9; }
+
+    .eliminar-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .eliminar-btn:hover { background-color: #c0392b; }
+
+    .no-data {
+      text-align: center;
+      padding: 18px;
+      color: #777;
+      font-size: 15px;
+    }
+
+    @media (max-width: 800px) {
+      .contenedor-tabla { padding: 10px; }
+      #cuponesTable { min-width: 800px; }
+    }
+  </style>
 </head>
 <body>
   <div class="main-container">
@@ -42,17 +141,14 @@
         <table id="cuponesTable">
           <tr>
             <th>ID</th>
-            <th>codigo</th>
-            <th>titulo</th>
-            <th>comercio</th>
-            <th>descuento</th>
-            <th>descripción</th>
-            <th>valido de</th>
-            <th>valido hasta</th>
-            <th>limite</th>
-            <th>acciones</th>
+            <th>Comercio</th>
+            <th>Código</th>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Válido hasta</th>
+            <th>Límite</th>
+            <th>Acciones</th>
           </tr>
-          <!-- Las filas se llenan dinámicamente con JS -->
         </table>
 
         <div class="contenedor-botones">
@@ -67,43 +163,36 @@
       const table = document.getElementById("cuponesTable");
 
       try {
-        // 🔗 Conecta al backend: ajusta la IP/puerto según tu entorno
         const response = await fetch('http://localhost:4000/beneficioJoven/coupons');
         if (!response.ok) throw new Error("Error al obtener los cupones");
 
         const coupons = await response.json();
 
-        // Si no hay cupones
         if (coupons.length === 0) {
           const row = document.createElement("tr");
-          row.innerHTML = `<td colspan="10" style="text-align:center;">No hay cupones registrados</td>`;
+          row.innerHTML = `<td colspan="10" class="no-data">No hay cupones registrados</td>`;
           table.appendChild(row);
           return;
         }
 
-        // Inserta cada cupón en la tabla
         coupons.forEach(coupon => {
-  const row = document.createElement("tr");
-  row.innerHTML = `
-    <td>${coupon.id}</td>
-    <td>${coupon.code}</td>
-    <td>${coupon.title}</td>
-    <td>${coupon.merchant_id}</td>
-    <td>${coupon.discount_type}</td>
-    <td>${coupon.description}</td>
-    <td>${new Date(coupon.valid_from).toLocaleDateString()}</td>
-    <td>${new Date(coupon.valid_until).toLocaleDateString()}</td>
-    <td>${coupon.usage_limit}</td>
-    <td><button class="eliminar-btn"><i class="fas fa-trash-alt"></i></button></td>
-  `;
-  table.appendChild(row);
-});
-
-
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${coupon.coupon_id}</td>
+            <td>${coupon.merchant_name}</td>
+            <td>${coupon.code}</td>
+            <td>${coupon.title}</td>
+            <td>${coupon.description}</td>
+            <td>${new Date(coupon.valid_until).toLocaleDateString()}</td>
+            <td>${coupon.usage_limit}</td>
+            <td><button class="eliminar-btn"><i class="fas fa-trash-alt"></i></button></td>
+          `;
+          table.appendChild(row);
+        });
       } catch (error) {
         console.error("Error al cargar cupones:", error);
         const row = document.createElement("tr");
-        row.innerHTML = `<td colspan="10" style="text-align:center; color:red;">Error al cargar los cupones</td>`;
+        row.innerHTML = `<td colspan="10" class="no-data" style="color:red;">Error al cargar los cupones</td>`;
         table.appendChild(row);
       }
     });
