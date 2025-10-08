@@ -66,3 +66,7 @@ th, td {
 }
 
 th { background-color: #d5d5d5; }
+
+#cuponesTable th, #cuponesTable td { border-left: none !important; border-right: none !important; }
+#cuponesTable thead th { border-bottom: 1px solid #e0e0e0; }
+#cuponesTable tbody td { border-bottom: 1px solid #e0e0e0; }
