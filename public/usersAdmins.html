@@ -183,36 +183,39 @@
     const filtroSelect = document.getElementById("filtro-usuarios");
     let usuariosActuales = [];
 
-    async function cargarUsuarios(tipo = "all") {
-      let url;
-      switch (tipo) {
-        case "jovenes":
-          url = "http://localhost:4000/beneficioJoven/jovenes";
-          break;
-        case "merchants":
-          url = "http://localhost:4000/beneficioJoven/merchants";
-          break;
-        case "admins":
-          url = "http://localhost:4000/beneficioJoven/admins";
-          break;
-        default:
-          url = "http://localhost:4000/beneficioJoven/allusers";
-      }
+async function cargarUsuarios(tipo = "all") {
+  const baseUrl = "https://bj-api.site/beneficioJoven";
+  let url;
 
-      tablaUsuarios.innerHTML = "<tr><td colspan='4'>Cargando usuarios...</td></tr>";
+  switch (tipo) {
+    case "jovenes":
+      url = `${baseUrl}/jovenes`;
+      break;
+    case "merchants":
+      url = `${baseUrl}/merchants`;
+      break;
+    case "admins":
+      url = `${baseUrl}/admins`;
+      break;
+    default:
+      url = `${baseUrl}/allusers`;
+  }
 
-      try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("Error al obtener datos");
-        const data = await response.json();
-        usuariosActuales = data;
+  tablaUsuarios.innerHTML = "<tr><td colspan='4'>Cargando usuarios...</td></tr>";
 
-        renderTabla(data, tipo);
-      } catch (error) {
-        console.error(error);
-        tablaUsuarios.innerHTML = "<tr><td colspan='4'>Error al cargar datos</td></tr>";
-      }
-    }
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Error al obtener datos");
+    const data = await response.json();
+    usuariosActuales = data;
+
+    renderTabla(data, tipo);
+  } catch (error) {
+    console.error(error);
+    tablaUsuarios.innerHTML = "<tr><td colspan='4'>Error al cargar datos</td></tr>";
+  }
+}
+
 
     function renderTabla(data, tipo) {
       encabezadoTabla.innerHTML = "";
