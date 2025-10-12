@@ -1,5 +1,5 @@
 
-# 📱 Beneficio Joven – Repo 2: Paneles de Administradores y Comercios
+# 📱 Beneficio Joven – Repo 2: Paneles de Administradores
 
 Este repositorio contiene el desarrollo de la **aplicación web de administración** del programa **Beneficio Joven**, una iniciativa del **Gobierno Municipal de Atizapán de Zaragoza** para apoyar a la juventud del municipio mediante **cupones, promociones y descuentos exclusivos** en comercios aliados.
 
