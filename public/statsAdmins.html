@@ -35,38 +35,92 @@
                 </a>
             </div>
         </div>
+
         <div class="contenido-pagina">
             <h2>Bienvenido @admin</h2>
             <div class="contenedor-stats">
-                <p>Aqui podrás encontrar estadisticas del sistema!</p>
-                <div class="mosaico-stats">
+                <p>Aquí podrás encontrar estadísticas del sistema en tiempo real.</p>
+                <div class="mosaico-stats" id="stats-container">
                     <div class="fila">
                         <div class="stat">
-                            <i class="stat-icon fas fa-ticket-alt"></i>
-                            <div class="stat-value">12,487</div>
-                            <div class="stat-label">Cupones Activos</div>
+                            <i class="stat-icon fas fa-ticket-alt" style="color:#c23cc2;"></i>
+                            <div class="stat-value" id="total_cupones">--</div>
+                            <div class="stat-label">Total Cupones</div>
                         </div>
                         <div class="stat">
-                            <i class="stat-icon fas fa-shopping-cart"></i>
-                            <div class="stat-value">89%</div>
-                            <div class="stat-label">Tasa de Conversión</div>
+                            <i class="stat-icon fas fa-users" style="color:#4a69bd;"></i>
+                            <div class="stat-value" id="total_jovenes">--</div>
+                            <div class="stat-label">Total Jóvenes</div>
                         </div>
                     </div>
                     <div class="fila">
                         <div class="stat">
-                            <i class="stat-icon fas fa-users" style="color: #4a69bd;"></i>
-                            <div class="stat-value">45,231</div>
-                            <div class="stat-label">Usuarios Activos</div>
+                            <i class="stat-icon fas fa-store" style="color:#28a745;"></i>
+                            <div class="stat-value" id="total_comercios">--</div>
+                            <div class="stat-label">Total Comercios</div>
                         </div>
                         <div class="stat">
-                            <i class="stat-icon fas fa-chart-line" style="color: #c23cc2;"></i>
-                            <div class="stat-value">3.2M</div>
-                            <div class="stat-label">Ahorros Generados</div>
+                            <i class="stat-icon fas fa-hand-holding-usd" style="color:#ff6b6b;"></i>
+                            <div class="stat-value" id="total_redenciones">--</div>
+                            <div class="stat-label">Total Redenciones</div>
+                        </div>
+                    </div>
+                    <div class="fila">
+                        <div class="stat">
+                            <i class="stat-icon fas fa-percentage" style="color:#f1c40f;"></i>
+                            <div class="stat-value" id="cupones_asignados_a_jovenes">--</div>
+                            <div class="stat-label">Cupones Asignados</div>
+                        </div>
+                        <div class="stat">
+                            <i class="stat-icon fas fa-times-circle" style="color:#e74c3c;"></i>
+                            <div class="stat-value" id="cupones_no_asignados">--</div>
+                            <div class="stat-label">Cupones No Asignados</div>
+                        </div>
+                    </div>
+                    <div class="fila">
+                        <div class="stat">
+                            <i class="stat-icon fas fa-check-circle" style="color:#2ecc71;"></i>
+                            <div class="stat-value" id="cupones_unicos_redimidos">--</div>
+                            <div class="stat-label">Cupones Únicos Redimidos</div>
+                        </div>
+                        <div class="stat">
+                            <i class="stat-icon fas fa-store-alt" style="color:#9b59b6;"></i>
+                            <div class="stat-value" id="comercios_con_cupones">--</div>
+                            <div class="stat-label">Comercios con Cupones</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        async function cargarEstadisticas() {
+            try {
+                const respuesta = await fetch('https://bj-api.site/beneficioJoven/stats');
+                if (!respuesta.ok) throw new Error('Error al obtener datos del servidor');
+                const data = await respuesta.json();
+
+                // Se espera un array con un objeto dentro
+                const stats = data[0];
+
+                // Mostrar los valores en el HTML
+                document.getElementById('total_cupones').textContent = stats.total_cupones ?? '0';
+                document.getElementById('total_jovenes').textContent = stats.total_jovenes ?? '0';
+                document.getElementById('total_comercios').textContent = stats.total_comercios ?? '0';
+                document.getElementById('comercios_con_cupones').textContent = stats.comercios_con_cupones ?? '0';
+                document.getElementById('cupones_asignados_a_jovenes').textContent = stats.cupones_asignados_a_jovenes ?? '0';
+                document.getElementById('cupones_no_asignados').textContent = stats.cupones_no_asignados ?? '0';
+                document.getElementById('total_redenciones').textContent = stats.total_redenciones ?? '0';
+                document.getElementById('cupones_unicos_redimidos').textContent = stats.cupones_unicos_redimidos ?? '0';
+            } catch (error) {
+                console.error(error);
+                alert("No se pudieron cargar las estadísticas. Intenta más tarde.");
+            }
+        }
+
+        // Llama a la función al cargar la página
+        document.addEventListener("DOMContentLoaded", cargarEstadisticas);
+    </script>
 </body>
 </html>
