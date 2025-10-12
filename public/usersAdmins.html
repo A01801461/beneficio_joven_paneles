@@ -1,3 +1,14 @@
+<!-- 
+----------------------------------------------------------
+ usersAdmins.html
+
+ filtra y lista los usuarios (jovenes, admins & comercios) en la BD
+
+ Fecha: 11-Oct-2025
+ Autores: Equipo 2 - Gpo 401
+----------------------------------------------------------
+-->
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -183,38 +194,38 @@
     const filtroSelect = document.getElementById("filtro-usuarios");
     let usuariosActuales = [];
 
-async function cargarUsuarios(tipo = "all") {
-  const baseUrl = "https://bj-api.site/beneficioJoven";
-  let url;
+    async function cargarUsuarios(tipo = "all") {
+      const baseUrl = "https://bj-api.site/beneficioJoven";
+      let url;
 
-  switch (tipo) {
-    case "jovenes":
-      url = `${baseUrl}/jovenes`;
-      break;
-    case "merchants":
-      url = `${baseUrl}/merchants`;
-      break;
-    case "admins":
-      url = `${baseUrl}/admins`;
-      break;
-    default:
-      url = `${baseUrl}/allusers`;
-  }
+      switch (tipo) {
+        case "jovenes":
+          url = `${baseUrl}/jovenes`;
+          break;
+        case "merchants":
+          url = `${baseUrl}/merchants`;
+          break;
+        case "admins":
+          url = `${baseUrl}/admins`;
+          break;
+        default:
+          url = `${baseUrl}/allusers`;
+      }
 
-  tablaUsuarios.innerHTML = "<tr><td colspan='4'>Cargando usuarios...</td></tr>";
+      tablaUsuarios.innerHTML = "<tr><td colspan='4'>Cargando usuarios...</td></tr>";
 
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("Error al obtener datos");
-    const data = await response.json();
-    usuariosActuales = data;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Error al obtener datos");
+        const data = await response.json();
+        usuariosActuales = data;
 
-    renderTabla(data, tipo);
-  } catch (error) {
-    console.error(error);
-    tablaUsuarios.innerHTML = "<tr><td colspan='4'>Error al cargar datos</td></tr>";
-  }
-}
+        renderTabla(data, tipo);
+      } catch (error) {
+        console.error(error);
+        tablaUsuarios.innerHTML = "<tr><td colspan='4'>Error al cargar datos</td></tr>";
+      }
+    }
 
 
     function renderTabla(data, tipo) {

@@ -1,3 +1,12 @@
+//----------------------------------------------------------
+// app.js
+//
+// Archivo principal, inicia el servidor.
+//
+// Fecha: 11-Oct-2025
+// Autores: Equipo 2 - Gpo 401
+//----------------------------------------------------------
+
 const express = require('express');
 const path = require('path');
 const app = express();
