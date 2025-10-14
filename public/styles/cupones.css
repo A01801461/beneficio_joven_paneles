@@ -88,7 +88,7 @@
     }
 
     .agregar-btn {
-      background-color: #3498db;
+      background: linear-gradient(to right, #7cbcde, #55408a);;
       color: white;
       border: none;
       padding: 10px 18px;
@@ -99,7 +99,7 @@
     }
 
     .agregar-btn:hover {
-      background-color: #2980b9;
+      background: linear-gradient(to right, #7cbcde, #55408a);;
     }
 
     .eliminar-btn {
@@ -201,9 +201,6 @@
       scale: 1.05;
     }
 
-    /* =============================
-   🔍 Buscador de cupones
-   ============================= */
   .input-icon {
     position: relative;
     width: 280px;
