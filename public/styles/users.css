@@ -130,6 +130,6 @@ tbody tr:nth-child(even) {
 
 /* Aumentar tamaño de letra en la tabla */
 th, td {
-  font-size: 14px; /* puedes subirlo a 16px si lo quieres aún más grande */
-  padding: 14px;   /* un poco más de espacio visual */
+  font-size: 14px; 
+  padding: 14px; 
 }
