@@ -48,28 +48,34 @@
       </div>
     </div>
 
-    <div class="contenido-pagina">
-      <h2>Administrar cupones</h2>
-      <div class="contenedor-tabla">
-        <table id="cuponesTable">
-          <tr>
-            <th>ID</th>
-            <th>Comercio</th>
-            <th>Código</th>
-            <th>Título</th>
-            <th>Descripción</th>
-            <th>Válido hasta</th>
-            <th>Límite</th>
-            <th>Acciones</th>
-          </tr>
-        </table>
+<div class="contenido-pagina">
+  <h2>Administrar cupones</h2>
 
-        <div class="contenedor-botones">
-          <button id="abrirModal" class="agregar-btn">agregar cupón</button>
-        </div>
-      </div>
+  <div class="input-icon">
+    <i class="fas fa-search"></i>
+    <input type="text" id="buscador" placeholder="Buscar cupones..." />
+  </div>
+
+  <div class="contenedor-tabla">
+    <table id="cuponesTable">
+      <tr>
+        <th>ID</th>
+        <th>Comercio</th>
+        <th>Código</th>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Válido hasta</th>
+        <th>Límite</th>
+        <th>Acciones</th>
+      </tr>
+    </table>
+
+    <div class="contenedor-botones">
+      <button id="abrirModal" class="agregar-btn">agregar cupón</button>
     </div>
   </div>
+</div>
+
 
   <!-- === MODAL === -->
   <div id="modalAgregar" class="modal">
@@ -96,6 +102,11 @@
 
         <label>Límite de uso</label>
         <input type="number" name="usage_limit" required>
+
+          <div class="input-icon">
+            <i class="fas fa-search"></i>
+            <input type="text" id="buscador" placeholder="Buscar cupones..." />
+          </div>
 
         <div class="modal-buttons">
           <button type="button" class="cancelar-btn" id="cerrarModal">Cancelar</button>
