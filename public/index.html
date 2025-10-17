@@ -13,44 +13,47 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="styles/index.css">
-    <link rel="shortcut icon" href="images/iconoWeb.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="styles/index.css">
+  <link rel="shortcut icon" href="images/iconoWeb.png">
 </head>
 <body>
-    <div class="login-container">
-        <div class="logo-container">
-            <img src="images/logoSinFondo.png" alt="logo Beneficio Joven" class="logo">
-            <h3>Iniciar Sesión</h3>
-        </div>
-        <p class="instrucciones">Introduce tus credenciales de administrador.</p>
-        <form class="login-form" action="#" method="POST">
-            <div class="form-group">
-                <label for="username">Usuario</label>
-                <input 
-                    type="text" 
-                    id="username" 
-                    name="username" 
-                    placeholder="Ingresa tu usuario" 
-                    required
-                >
-            </div>
-            
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    name="password" 
-                    placeholder="Ingresa tu contraseña" 
-                    required
-                >
-            </div>
-            
-            <button type="submit" class="btn"><a href="statsAdmins.html">Iniciar Sesión</a></button>
-        </form>
+  <div class="login-container">
+    <div class="logo-container">
+      <img src="images/logoSinFondo.png" alt="logo Beneficio Joven" class="logo">
+      <h3>Iniciar Sesión</h3>
     </div>
+    <p class="instrucciones">Introduce tus credenciales de administrador.</p>
+
+    <form id="login-form" class="login-form">
+      <div class="form-group">
+        <label for="username">Usuario</label>
+        <input 
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Ingresa tu usuario"
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input 
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Ingresa tu contraseña"
+          required
+        >
+      </div>
+
+      <button type="submit" class="btn">Iniciar Sesión</button>
+    </form>
+  </div>
+
+  <script src="scripts/index.js"></script>
 </body>
 </html>
