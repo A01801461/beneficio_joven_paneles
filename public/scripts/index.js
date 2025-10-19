@@ -92,5 +92,5 @@ function showError(message) {
     if (errorContainer.style.display === "block") {
       errorContainer.style.display = "none";
     }
-  }, 5000);
+  }, 15000);
 }
