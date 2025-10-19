@@ -4,6 +4,10 @@
 
  maneja la logica del login.
 
+ credenciales de admin:
+ Usuario: admin.nuevo2@example.com
+ Contraseña: NewAdmin123
+
  Fecha: 18-Oct-2025
  Autores: Equipo 2 - Gpo 401
 ---------------------------------------------
