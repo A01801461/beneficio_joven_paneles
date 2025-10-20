@@ -1,49 +1,95 @@
+/* --- Estilos Base y Layout Principal --- */
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+}
+
+.main-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.contenido-pagina {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contenido-pagina h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+  font-weight: 600;
+}
+
+.side-bar {
+    flex-shrink: 0; /* Evita que la barra lateral se encoja */
+}
+
+.contenido-pagina {
+    flex-grow: 1; /* Hace que esta sección ocupe todo el espacio restante */
+    padding: 40px;
+    overflow-y: auto; /* Añade scroll SOLO a esta área si es necesario */
+}
+
+.contenido-pagina h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 70px;
+  font-size: 24px;
+  color: #333;
+  font-weight: 600;
+}
+
+/* --- Estilos Mejorados para las Estadísticas --- */
+
+.contenedor-stats p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 30px;
+}
+
 .contenedor-stats{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
+    margin-top: 50px;
 }
 
-.mosaico-stats{
+.mosaico-stats {
     display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 20px;
+    flex-wrap: wrap; /* Permite que los elementos se muevan a la siguiente línea */
+    justify-content: center; /* Centra las tarjetas */
+    gap: 25px; /* Espacio entre las tarjetas */
 }
 
-.fila{
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
-
-.stat{
+.stat {
+    position: relative; /* Necesario para que la barra de color superior funcione bien */
     display: flex;
     flex-direction: column;
-    border-radius: 20px;
-    background-color: #fafafa;
-    height: 20vh;
-    width: 38vh;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: ease all 0.3s;
+    
+    background-color: #ffffff;
+    border-radius: 15px; /* Bordes más redondeados */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    
+    /* Usamos min-height y un ancho flexible para mejor responsividad */
+    min-height: 180px;
+    width: 280px;
+    
+    transition: all 0.3s ease;
+    overflow: hidden; /* Oculta la barra de color si se sale */
 }
-        
+
 .stat:hover {
     transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
+/* Barra de color superior */
 .stat::before {
     content: '';
     position: absolute;
@@ -51,50 +97,27 @@
     left: 0;
     width: 100%;
     height: 5px;
+    background: linear-gradient(90deg, #7cbcde, #55408a);
+    opacity: 0.7;
 }
 
 .stat-icon {
-    font-size: 3.5rem;
-    margin-bottom: 20px;
-}
-
-.stat:nth-child(1) .stat-icon {
-    color: #ff6b6b;
-}
-
-.stat:nth-child(2) .stat-icon {
-    color: #4ecdc4;
+    /* La variable --icon-color se define en el HTML con style="--icon-color: #..." */
+    color: var(--icon-color); 
+    font-size: 3rem;
+    margin-bottom: 15px;
 }
 
 .stat-value {
-    font-size: 2.3rem;
+    font-size: 2.1rem;
     font-weight: 700;
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .stat-label {
-    font-size: 1.2rem;
-    color: #666;
+    font-size: 1rem;
+    color: #777;
     text-align: center;
-    padding: 0 20px;
-}
-
-body {
-    background: linear-gradient(135deg, #e3f2fd, #ffffff);
-}
-
-.stat::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    border-radius: 15px 20px 0 0;
-    background: linear-gradient(90deg, #4ecdc4, #675570);
-}
-
-.stat:hover {
-    background: linear-gradient(145deg, #fdfbfb, #ebedee);
+    padding: 0 10px;
 }
