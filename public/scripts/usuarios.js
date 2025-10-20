@@ -17,13 +17,18 @@ let usuariosActuales = [];
 /* ==============================
    CARGAR USUARIOS DESDE SERVIDOR
    ============================== */
+
 async function cargarUsuarios(tipo = "all") {
   const baseUrl = "https://bj-api.site/beneficioJoven";
   let url;
 
+  // Cambia el switch para usar rutas seguras donde aplique
   switch (tipo) {
     case "jovenes":
       url = `${baseUrl}/jovenes`;
+      break;
+    case "merchants":
+      url = `${baseUrl}/merchants`;
       break;
     case "admins":
       url = `${baseUrl}/admins`;
@@ -32,23 +37,51 @@ async function cargarUsuarios(tipo = "all") {
       url = `${baseUrl}/allusers`;
   }
 
+  const token = localStorage.getItem('token');  // obteniendo token de localStorage
+
+  // Headers obligatorios para rutas seguras
+  const headers = {
+    'Content-Type': 'application/json',  // Buena práctica
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;  // HEADER PARA verifyToken
+  }
+
   tablaUsuarios.innerHTML = "<tr><td colspan='4'>Cargando usuarios...</td></tr>";
 
   try {
-    const response = await fetch(url);
-    const data = await response.json().catch(() => ({})); // Por si no hay JSON
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: headers
+    });
+
+    // Manejo específico de errores de auth
+    if (response.status === 401) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.error || 'Token requerido o inválido. Inicia sesión.');
+    }
+    if (response.status === 403) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.error || 'No autorizado: Rol insuficiente (necesitas ser admin/super_admin).');
+    }
 
     if (!response.ok) {
-      const mensaje =
-        data?.message || data?.error || data?.detail || "Error al obtener datos del servidor.";
+      const data = await response.json().catch(() => ({}));
+      const mensaje = data?.message || data?.error || data?.detail || "Error al obtener datos del servidor.";
       throw new Error(mensaje);
     }
 
+    const data = await response.json();
     usuariosActuales = data;
     renderTabla(data, tipo);
 
   } catch (error) {
     console.error("❌ Error desde el servidor:", error);
+    // Si hay cualquier error de token:
+    if (error.message.includes('Token')) {
+      localStorage.removeItem('token'); // borrar token inválido
+      window.location.href = '/index.html'; // redirigir a login
+    }
     tablaUsuarios.innerHTML = `<tr><td colspan='4' style='color:red; padding:10px;'>⚠️ ${error.message}</td></tr>`;
   }
 }
