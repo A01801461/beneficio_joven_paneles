@@ -50,7 +50,7 @@ select:hover {
   box-shadow: 0 0 4px rgba(124, 188, 222, 0.4);
 }
 
-/* === INPUT CON ÍCONO === */
+/* === INPUT CON ÍCONO (universal para todos los buscadores) === */
 .input-icon {
   position: relative;
   display: flex;
@@ -64,7 +64,7 @@ select:hover {
   font-size: 14px;
 }
 
-#buscador {
+.input-icon input {
   padding: 8px 12px 8px 32px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -73,7 +73,7 @@ select:hover {
   transition: all 0.2s ease;
 }
 
-#buscador:focus {
+.input-icon input:focus {
   border-color: #7cbcde;
   box-shadow: 0 0 5px rgba(124, 188, 222, 0.4);
   outline: none;
@@ -177,23 +177,21 @@ td img {
 
 /* === MODAL === */
 .modal {
-  display: none;               
+  display: none;
   position: fixed;
-  inset: 0;                    
+  inset: 0;
   z-index: 1000;
   background: rgba(0,0,0,0.5);
-  justify-content: center;     /* centra horizontal */
-  align-items: center;         /* centra vertical */
-  padding: 20px;               /* evita recortes en pantallas pequeñas */
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
   box-sizing: border-box;
 }
 
-/* Clase para mostrar el modal (usa JS para añadir/quitar) */
 .modal.show {
   display: flex;
 }
 
-/* Contenido del modal */
 .modal-content {
   background: #fff;
   padding: 24px;
@@ -201,8 +199,8 @@ td img {
   width: 420px;
   max-width: 100%;
   box-shadow: 0 6px 24px rgba(0,0,0,0.18);
-  transform: translateY(0);   
-  margin: 0;                   
+  transform: translateY(0);
+  margin: 0;
 }
 
 .modal-content h3 {
