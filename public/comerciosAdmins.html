@@ -1,8 +1,8 @@
 <!-- 
 ----------------------------------------------------------
- usersAdmins.html
+ comerciosAdmins.html
 
- filtra y lista los usuarios (jovenes, admins) en la BD
+ filtra y lista los comercios en la BD
 
  Fecha: 11-Oct-2025
  Autores: Equipo 2 - Gpo 401
@@ -14,7 +14,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Panel de Usuarios</title>
+  <title>Panel de Comercios</title>
   <link rel="stylesheet" href="styles/sideBar.css" />
   <link rel="stylesheet" href="styles/users.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -33,10 +33,10 @@
           <a class="side-btn" href="statsAdmins.html">
             <i class="fas fa-chart-line"></i> estadisticas
           </a>
-          <a class="selected-side-btn" href="usersAdmins.html">
+          <a class="side-btn" href="usersAdmins.html">
             <i class="fas fa-users"></i> usuarios
           </a>
-          <a class="side-btn" href="comerciosAdmins.html">
+          <a class="selected-side-btn" href="comerciosAdmins.html">
             <i class="fas fa-bag-shopping"></i> comercios
           </a>
           <a class="side-btn" href="cuponsAdmins.html">
@@ -52,7 +52,7 @@
     </div>
 
     <div class="contenido-pagina">
-      <h2>Administrar Usuarios</h2>
+      <h2>Administrar Comercios</h2>
       <div class="filtro-container">
         <div class="filtro-busqueda">
           <select id="filtro-usuarios">
@@ -75,13 +75,14 @@
           <thead>
             <tr id="encabezadoTabla">
               <th>ID</th>
-              <th>Email</th>
-              <th>Rol</th>
-              <th>Fecha de creación</th>
+              <th>Comercio</th>
+              <th>Descripción</th>
+              <th>Logo</th>
+              <th>Tipo</th>
             </tr>
           </thead>
           <tbody id="tablaUsuarios">
-            <tr><td colspan="4">Cargando usuarios...</td></tr>
+            <tr><td colspan="4">Cargando comercios...</td></tr>
           </tbody>
         </table>
       </div>
@@ -96,18 +97,14 @@
   <div class="modal-content">
     <h3>Registrar nuevo comercio</h3>
     <form id="formComercio">
-
-      <label for="email">Correo electrónico</label>
-      <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required>
-
-      <label for="password">Contraseña</label>
-      <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" required>
+      <label for="user_id">User ID</label>
+      <input type="number" id="user_id" name="user_id" required>
 
       <label for="merchant_name">Nombre del comercio</label>
       <input type="text" id="merchant_name" name="merchant_name" required>
 
       <label for="description">Descripción</label>
-      <textarea id="description" name="description" rows="1" required></textarea>
+      <textarea id="description" name="description" rows="3" required></textarea>
 
       <label for="logo_url">URL del logo</label>
       <input type="url" id="logo_url" name="logo_url" placeholder="https://..." required>
@@ -126,4 +123,3 @@
   <script src="scripts/usuarios.js"></script>
 </body>
 </html>
-    
