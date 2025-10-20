@@ -132,3 +132,71 @@
     });
 
     cargarUsuarios();
+
+
+// === MODAL Y BOTÓN AGREGAR COMERCIO ===
+const modalComercio = document.getElementById("modalComercio");
+const abrirModalComercio = document.getElementById("abrirModalComercio");
+const cerrarModalComercio = document.getElementById("cerrarModalComercio");
+const formComercio = document.getElementById("formComercio");
+const botonComercioContainer = document.getElementById("botonComercioContainer");
+
+//Mostrar el botón solo si el filtro actual es "merchants"
+filtroSelect.addEventListener("change", (e) => {
+  const tipo = e.target.value;
+  if (tipo === "merchants") {
+    botonComercioContainer.style.display = "block";
+  } else {
+    botonComercioContainer.style.display = "none";
+  }
+  cargarUsuarios(tipo);
+});
+
+// Abrir modal
+abrirModalComercio.addEventListener("click", () => {
+  modalComercio.classList.add("show");
+});
+
+//Cerrar modal
+cerrarModalComercio.addEventListener("click", () => {
+  modalComercio.classList.remove("show");
+  formComercio.reset();
+});
+
+// Cerrar si se hace clic fuera del contenido
+window.addEventListener("click", (e) => {
+  if (e.target === modalComercio) {
+    modalComercio.classList.remove("show");
+    formComercio.reset();
+  }
+});
+
+// Enviar datos al endpoint
+formComercio.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const data = {
+    user_id: parseInt(document.getElementById("user_id").value),
+    merchant_name: document.getElementById("merchant_name").value.trim(),
+    description: document.getElementById("description").value.trim(),
+    logo_url: document.getElementById("logo_url").value.trim(),
+    merchant_type: document.getElementById("merchant_type").value.trim()
+  };
+
+  try {
+    const response = await fetch("https://bj-api.site/beneficioJoven/merchants", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify([data]) // el endpoint espera arreglo con un objeto
+    });
+
+    if (!response.ok) throw new Error("Error al agregar comercio");
+    alert("Comercio agregado exitosamente.");
+    modalComercio.classList.remove("show");
+    formComercio.reset();
+    cargarUsuarios("merchants");
+  } catch (err) {
+    console.error(err);
+    alert("No se pudo agregar el comercio: " + err.message);
+  }
+});

@@ -40,8 +40,6 @@
 
     <div class="contenido-pagina">
       <h2>Administrar Usuarios</h2>
-
-      <!-- 🔽 Filtros -->
       <div class="filtro-container">
         <div class="filtro-busqueda">
           <select id="filtro-usuarios">
@@ -58,7 +56,7 @@
         </div>
       </div>
 
-      <!-- 🔽 Tabla -->
+            <!-- 🔽 Tabla -->
       <div class="contenedor-tabla">
         <table>
           <thead>
@@ -74,8 +72,39 @@
           </tbody>
         </table>
       </div>
-    </div>
+
+<!-- Botón para agregar comercio (solo visible al filtrar Comercios) -->
+<div id="botonComercioContainer" style="display: none; text-align: center; margin-top: 20px;">
+  <button id="abrirModalComercio" class="agregar-btn">Agregar comercio</button>
+</div>
+
+<!-- Modal para agregar comercio -->
+<div id="modalComercio" class="modal">
+  <div class="modal-content">
+    <h3>Registrar nuevo comercio</h3>
+    <form id="formComercio">
+      <label for="user_id">User ID</label>
+      <input type="number" id="user_id" name="user_id" required>
+
+      <label for="merchant_name">Nombre del comercio</label>
+      <input type="text" id="merchant_name" name="merchant_name" required>
+
+      <label for="description">Descripción</label>
+      <textarea id="description" name="description" rows="3" required></textarea>
+
+      <label for="logo_url">URL del logo</label>
+      <input type="url" id="logo_url" name="logo_url" placeholder="https://..." required>
+
+      <label for="merchant_type">Tipo de comercio</label>
+      <input type="text" id="merchant_type" name="merchant_type" required>
+
+      <div class="modal-buttons">
+        <button type="button" class="cancelar-btn" id="cerrarModalComercio">Cancelar</button>
+        <button type="submit" class="guardar-btn">Guardar</button>
+      </div>
+    </form>
   </div>
+</div>
 
   <script src="scripts/usuarios.js"></script>
 </body>
