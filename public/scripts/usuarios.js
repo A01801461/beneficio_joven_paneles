@@ -1,28 +1,25 @@
-/*
--------------------------------------------
+//-------------------------------------------
 // usuarios.js
-//
-// Lista y filtra usuarios (jóvenes y admins)
-//
 // Fecha: 20-Oct-2025
 // Autores: Equipo 2 - Gpo 401
----------------------------------------------
-*/
+//-------------------------------------------
 
 const tablaUsuarios = document.getElementById("tablaUsuarios");
 const encabezadoTabla = document.getElementById("encabezadoTabla");
 const filtroSelect = document.getElementById("filtro-usuarios");
+const btnAgregarAdmin = document.getElementById("btn-agregar-admin");
+const modalAdmin = document.getElementById("modalAgregarAdmin");
+const cancelarAdmin = document.getElementById("cancelarAdmin");
+const guardarAdmin = document.getElementById("guardarAdmin");
 let usuariosActuales = [];
 
 /* ==============================
-   CARGAR USUARIOS DESDE SERVIDOR
+   CARGAR USUARIOS
    ============================== */
-
 async function cargarUsuarios(tipo = "all") {
   const baseUrl = "https://bj-api.site/beneficioJoven";
   let url;
 
-  // Cambia el switch para usar rutas seguras donde aplique
   switch (tipo) {
     case "jovenes":
       url = `${baseUrl}/jovenes`;
@@ -37,52 +34,25 @@ async function cargarUsuarios(tipo = "all") {
       url = `${baseUrl}/allusers`;
   }
 
-  const token = localStorage.getItem('token');  // obteniendo token de localStorage
-
-  // Headers obligatorios para rutas seguras
-  const headers = {
-    'Content-Type': 'application/json',  // Buena práctica
-  };
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;  // HEADER PARA verifyToken
-  }
+  const token = localStorage.getItem("token");
+  const headers = { "Content-Type": "application/json" };
+  if (token) headers["Authorization"] = `Bearer ${token}`;
 
   tablaUsuarios.innerHTML = "<tr><td colspan='4'>Cargando usuarios...</td></tr>";
 
   try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: headers
-    });
-
-    // Manejo específico de errores de auth
-    if (response.status === 401) {
-      const data = await response.json().catch(() => ({}));
-      throw new Error(data.error || 'Token requerido o inválido. Inicia sesión.');
-    }
-    if (response.status === 403) {
-      const data = await response.json().catch(() => ({}));
-      throw new Error(data.error || 'No autorizado: Rol insuficiente (necesitas ser admin/super_admin).');
-    }
-
+    const response = await fetch(url, { method: "GET", headers });
     if (!response.ok) {
       const data = await response.json().catch(() => ({}));
-      const mensaje = data?.message || data?.error || data?.detail || "Error al obtener datos del servidor.";
-      throw new Error(mensaje);
+      throw new Error(data.error || "Error al obtener los usuarios");
     }
 
     const data = await response.json();
     usuariosActuales = data;
     renderTabla(data, tipo);
-
   } catch (error) {
     console.error("❌ Error desde el servidor:", error);
-    // Si hay cualquier error de token:
-    if (error.message.includes('Token')) {
-      localStorage.removeItem('token'); // borrar token inválido
-      window.location.href = '/index.html'; // redirigir a login
-    }
-    tablaUsuarios.innerHTML = `<tr><td colspan='4' style='color:red; padding:10px;'>⚠️ ${error.message}</td></tr>`;
+    tablaUsuarios.innerHTML = `<tr><td colspan='4' style='color:red;'>⚠️ ${error.message}</td></tr>`;
   }
 }
 
@@ -93,15 +63,11 @@ function renderTabla(data, tipo) {
   encabezadoTabla.innerHTML = "";
   let columnas = [];
 
-  if (tipo === "all") {
-    columnas = ["ID", "Email", "Rol", "Fecha de creación"];
-  } else if (tipo === "jovenes") {
-    columnas = ["ID", "Nombre Completo", "CURP", "Nacimiento"];
-  } else if (tipo === "admins") {
-    columnas = ["ID", "Nombre", "Nivel de acceso"];
-  }
+  if (tipo === "all") columnas = ["ID", "Email", "Rol", "Fecha de creación"];
+  else if (tipo === "jovenes") columnas = ["ID", "Nombre Completo", "CURP", "Nacimiento"];
+  else if (tipo === "admins") columnas = ["ID", "Nombre", "Nivel de acceso"];
 
-  columnas.forEach(col => {
+  columnas.forEach((col) => {
     const th = document.createElement("th");
     th.textContent = col;
     encabezadoTabla.appendChild(th);
@@ -112,27 +78,27 @@ function renderTabla(data, tipo) {
     return;
   }
 
-  tablaUsuarios.innerHTML = data.map(u => {
+  tablaUsuarios.innerHTML = data.map((u) => {
     if (tipo === "all") {
       return `<tr>
-          <td>${u.id}</td>
-          <td>${u.email}</td>
-          <td>${u.role}</td>
-          <td>${new Date(u.created_at).toLocaleDateString()}</td>
-        </tr>`;
+        <td>${u.id}</td>
+        <td>${u.email}</td>
+        <td>${u.role}</td>
+        <td>${new Date(u.created_at).toLocaleDateString()}</td>
+      </tr>`;
     } else if (tipo === "jovenes") {
       return `<tr>
-          <td>${u.user_id}</td>
-          <td>${u.full_name || "-"}</td>
-          <td>${u.curp || "-"}</td>
-          <td>${u.birth_date || "-"}</td>
-        </tr>`;
+        <td>${u.user_id}</td>
+        <td>${u.full_name || "-"}</td>
+        <td>${u.curp || "-"}</td>
+        <td>${u.birth_date || "-"}</td>
+      </tr>`;
     } else if (tipo === "admins") {
       return `<tr>
-          <td>${u.user_id}</td>
-          <td>${u.full_name || "-"}</td>
-          <td>${u.is_super_admin ? "Super Admin" : "Admin"}</td>
-        </tr>`;
+        <td>${u.user_id}</td>
+        <td>${u.full_name || "-"}</td>
+        <td>${u.is_super_admin ? "Super Admin" : "Admin"}</td>
+      </tr>`;
     }
   }).join("");
 }
@@ -144,24 +110,105 @@ document.getElementById("buscador").addEventListener("input", (e) => {
   const texto = e.target.value.toLowerCase();
   const tipo = filtroSelect.value;
   const filtrados = usuariosActuales.filter((u) =>
-    Object.values(u).some((val) =>
-      String(val).toLowerCase().includes(texto)
-    )
+    Object.values(u).some((val) => String(val).toLowerCase().includes(texto))
   );
+  renderTabla(texto.trim() ? filtrados : usuariosActuales, tipo);
+});
 
-  if (texto.trim() !== "") {
-    renderTabla(filtrados, tipo);
-    document.querySelectorAll("tbody tr").forEach(tr => tr.classList.add("destacado"));
-  } else {
-    renderTabla(usuariosActuales, tipo);
+/* ==============================
+   FILTRO
+   ============================== */
+filtroSelect.addEventListener("change", (e) => {
+  const tipo = e.target.value;
+  cargarUsuarios(tipo);
+  btnAgregarAdmin.style.display = tipo === "admins" ? "inline-block" : "none";
+});
+
+/* ==============================
+   MODAL
+   ============================== */
+btnAgregarAdmin.addEventListener("click", () => {
+  modalAdmin.style.display = "flex";
+});
+
+cancelarAdmin.addEventListener("click", () => {
+  modalAdmin.style.display = "none";
+});
+
+window.addEventListener("click", (e) => {
+  if (e.target === modalAdmin) modalAdmin.style.display = "none";
+});
+
+/* ==============================
+   GUARDAR ADMIN
+   ============================== */
+guardarAdmin.addEventListener("click", async () => {
+  const email = document.getElementById("emailAdmin").value.trim();
+  const password = document.getElementById("passwordAdmin").value.trim();
+  const fullName = document.getElementById("nombreAdmin").value.trim();
+  const isSuperAdmin = document.querySelector('input[name="superAdmin"]:checked').value === "true";
+
+  if (!email || !password || !fullName) {
+    alert("⚠️ Por favor completa todos los campos.");
+    return;
+  }
+
+  const NEW_ADMIN_DATA = {
+    email: email,
+    password: password,
+    role: "admin",
+    profileData: {
+      full_name: fullName,
+      is_super_admin: isSuperAdmin,
+    },
+  };
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("⚠️ Token no encontrado. Inicia sesión nuevamente.");
+    window.location.href = "/index.html";
+    return;
+  }
+
+  try {
+    const response = await fetch("https://bj-api.site/beneficioJoven/auth/register/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(NEW_ADMIN_DATA),
+    });
+
+    let data;
+    try {
+      data = await response.json();
+    } catch {
+      const text = await response.text();
+      console.error("⚠️ Respuesta no-JSON del servidor:", text);
+      throw new Error("El servidor devolvió HTML en lugar de JSON. Verifica el endpoint o permisos.");
+    }
+
+    if (!response.ok) {
+      throw new Error(data.error || data.message || "❌ No se pudo crear el admin.");
+    }
+
+    alert("✅ Admin agregado correctamente.");
+    modalAdmin.style.display = "none";
+
+    // Recargar la tabla con los nuevos admins
+    await cargarUsuarios("admins");
+
+    // Limpiar el formulario
+    document.getElementById("formAdmin").reset();
+  } catch (error) {
+    console.error("❌ Error al agregar admin:", error);
+    alert("❌ " + error.message);
   }
 });
 
 /* ==============================
-   FILTRO DE USUARIOS
+   INICIALIZACIÓN
    ============================== */
-filtroSelect.addEventListener("change", (e) => {
-  cargarUsuarios(e.target.value);
-});
-
 cargarUsuarios();
+btnAgregarAdmin.style.display = "none";
