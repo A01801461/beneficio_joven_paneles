@@ -24,9 +24,6 @@ async function cargarUsuarios(tipo = "all") {
     case "jovenes":
       url = `${baseUrl}/jovenes`;
       break;
-    case "merchants":
-      url = `${baseUrl}/merchants`;
-      break;
     case "admins":
       url = `${baseUrl}/admins`;
       break;
