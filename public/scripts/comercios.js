@@ -1,38 +1,47 @@
 /*
 -------------------------------------------
-// comercios.js
-//
-// Lista y administra comercios
-//
-// Fecha: 20-Oct-2025
-// Autores: Equipo 2 - Gpo 401
----------------------------------------------
+comercios.js
+Lista y administra comercios con seguridad
+Fecha: 20-Oct-2025
+Autores: Equipo 2 - Gpo 401
+-------------------------------------------
 */
 
 const tablaComercios = document.getElementById("tablaComercios");
 const encabezadoTablaComercios = document.getElementById("encabezadoTablaComercios");
 let comerciosActuales = [];
 
+// === FETCH SEGURO CON TOKEN ===
+async function fetchSeguro(url, options = {}) {
+  const token = localStorage.getItem("token");
+  options.headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {}),
+  };
+  if (token) options.headers["Authorization"] = `Bearer ${token}`;
+  const response = await fetch(url, options);
+
+  if (response.status === 401) throw new Error("Token requerido o inválido.");
+  if (response.status === 403) throw new Error("No autorizado.");
+
+  let data;
+  try { data = await response.json(); } catch { data = {}; }
+
+  if (!response.ok) throw new Error(data.error || data.message || "Error en la solicitud.");
+  return data;
+}
+
 /* ==============================
-   CARGAR COMERCIOS DESDE SERVIDOR
+   CARGAR COMERCIOS
    ============================== */
 async function cargarComercios() {
   const url = "https://bj-api.site/beneficioJoven/merchants";
   tablaComercios.innerHTML = "<tr><td colspan='5'>Cargando comercios...</td></tr>";
 
   try {
-    const response = await fetch(url);
-    const data = await response.json().catch(() => ({}));
-
-    if (!response.ok) {
-      const mensaje =
-        data?.message || data?.error || data?.detail || "Error al obtener comercios.";
-      throw new Error(mensaje);
-    }
-
+    const data = await fetchSeguro(url);
     comerciosActuales = data;
     renderTablaComercios(data);
-
   } catch (error) {
     console.error("❌ Error al cargar comercios:", error);
     tablaComercios.innerHTML = `<tr><td colspan='5' style='color:red;'>⚠️ ${error.message}</td></tr>`;
@@ -62,18 +71,13 @@ function renderTablaComercios(data) {
 /* ==============================
    BUSCADOR
    ============================== */
-document.getElementById("buscadorComercio").addEventListener("input", (e) => {
+document.getElementById("buscadorComercio").addEventListener("input", e => {
   const texto = e.target.value.toLowerCase();
-  const filtrados = comerciosActuales.filter((c) =>
-    Object.values(c).some((val) => String(val).toLowerCase().includes(texto))
+  const filtrados = comerciosActuales.filter(c =>
+    Object.values(c).some(val => String(val).toLowerCase().includes(texto))
   );
 
-  if (texto.trim() !== "") {
-    renderTablaComercios(filtrados);
-    document.querySelectorAll("tbody tr").forEach(tr => tr.classList.add("destacado"));
-  } else {
-    renderTablaComercios(comerciosActuales);
-  }
+  renderTablaComercios(texto.trim() ? filtrados : comerciosActuales);
 });
 
 /* ==============================
@@ -84,29 +88,14 @@ const abrirModalComercio = document.getElementById("abrirModalComercio");
 const cerrarModalComercio = document.getElementById("cerrarModalComercio");
 const formComercio = document.getElementById("formComercio");
 
-// Abrir modal
-abrirModalComercio.addEventListener("click", () => {
-  modalComercio.classList.add("show");
-});
-
-// Cerrar modal
-cerrarModalComercio.addEventListener("click", () => {
-  modalComercio.classList.remove("show");
-  formComercio.reset();
-});
-
-// Cerrar si se hace clic fuera del contenido
-window.addEventListener("click", (e) => {
-  if (e.target === modalComercio) {
-    modalComercio.classList.remove("show");
-    formComercio.reset();
-  }
-});
+abrirModalComercio.addEventListener("click", () => modalComercio.classList.add("show"));
+cerrarModalComercio.addEventListener("click", () => { modalComercio.classList.remove("show"); formComercio.reset(); });
+window.addEventListener("click", e => { if (e.target === modalComercio) { modalComercio.classList.remove("show"); formComercio.reset(); }});
 
 /* ==============================
    REGISTRO DE NUEVO COMERCIO
    ============================== */
-formComercio.addEventListener("submit", async (e) => {
+formComercio.addEventListener("submit", async e => {
   e.preventDefault();
 
   const payload = {
@@ -122,19 +111,10 @@ formComercio.addEventListener("submit", async (e) => {
   };
 
   try {
-    const response = await fetch("https://bj-api.site/beneficioJoven/auth/register/", {
+    await fetchSeguro("https://bj-api.site/beneficioJoven/auth/register/", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
-
-    const data = await response.json().catch(() => ({}));
-
-    if (!response.ok) {
-      const mensaje =
-        data?.message || data?.error || data?.detail || "Error al agregar comercio.";
-      throw new Error(mensaje);
-    }
 
     alert("✅ Comercio agregado exitosamente.");
     modalComercio.classList.remove("show");
@@ -147,4 +127,5 @@ formComercio.addEventListener("submit", async (e) => {
   }
 });
 
+// === INICIO ===
 cargarComercios();

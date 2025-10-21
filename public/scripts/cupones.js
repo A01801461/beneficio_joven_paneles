@@ -1,12 +1,10 @@
 /*
 -------------------------------------------
-// cupones.js
-//
-// Lista y filtra cupones
-//
-// Fecha: 13-Oct-2025
-// Autores: Equipo 2 - Gpo 401
----------------------------------------------
+cupones.js
+Lista, agrega y elimina cupones con seguridad
+Fecha: 13-Oct-2025
+Autores: Equipo 2 - Gpo 401
+-------------------------------------------
 */
 
 const modal = document.getElementById('modalAgregar');
@@ -18,6 +16,26 @@ const buscador = document.getElementById("buscador");
 
 const API_URL = "https://bj-api.site/beneficioJoven/coupons";
 
+// === FETCH SEGURO CON TOKEN ===
+async function fetchSeguro(url, options = {}) {
+  const token = localStorage.getItem("token");
+  options.headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {}),
+  };
+  if (token) options.headers["Authorization"] = `Bearer ${token}`;
+  const response = await fetch(url, options);
+
+  if (response.status === 401) throw new Error("Token requerido o inválido.");
+  if (response.status === 403) throw new Error("No autorizado.");
+
+  let data;
+  try { data = await response.json(); } catch { data = {}; }
+
+  if (!response.ok) throw new Error(data.error || data.message || "Error en la solicitud.");
+  return data;
+}
+
 // === MANEJO DE MODAL ===
 abrirModal.addEventListener('click', () => modal.style.display = 'flex');
 cerrarModal.addEventListener('click', () => modal.style.display = 'none');
@@ -26,9 +44,7 @@ window.addEventListener('click', e => { if (e.target === modal) modal.style.disp
 // === CARGAR CUPONES ===
 async function cargarCupones() {
   try {
-    const response = await fetch(API_URL);
-    if (!response.ok) throw new Error("Error al obtener los cupones");
-    const coupons = await response.json();
+    const coupons = await fetchSeguro(API_URL);
 
     table.innerHTML = `
       <tr>
@@ -36,7 +52,7 @@ async function cargarCupones() {
         <th>Descripción</th><th>Válido hasta</th><th>Límite</th><th>Acciones</th>
       </tr>`;
 
-    if (coupons.length === 0) {
+    if (!coupons.length) {
       const row = document.createElement("tr");
       row.innerHTML = `<td colspan="8" class="no-data">No hay cupones registrados</td>`;
       table.appendChild(row);
@@ -62,7 +78,6 @@ async function cargarCupones() {
       table.appendChild(row);
     });
 
-    // Botones de eliminar
     document.querySelectorAll(".eliminar-btn").forEach(btn => {
       btn.addEventListener("click", async () => {
         const id = btn.getAttribute("data-id");
@@ -73,21 +88,21 @@ async function cargarCupones() {
     });
 
   } catch (err) {
-    console.error(err);
+    console.error("❌ Error al cargar cupones:", err);
+    table.innerHTML = `<tr><td colspan="8" style="color:red;">⚠️ ${err.message}</td></tr>`;
   }
 }
 
+// === BUSCADOR ===
 buscador.addEventListener("keyup", function() {
   const filtro = this.value.toLowerCase();
   const filas = table.getElementsByTagName("tr");
 
-  for (let i = 1; i < filas.length; i++) { // saltar encabezado
+  for (let i = 1; i < filas.length; i++) {
     const celdas = filas[i].getElementsByTagName("td");
     let coincide = false;
-
     for (let j = 0; j < celdas.length; j++) {
-      const textoCelda = celdas[j].textContent.toLowerCase();
-      if (textoCelda.includes(filtro)) {
+      if (celdas[j].textContent.toLowerCase().includes(filtro)) {
         coincide = true;
         break;
       }
@@ -99,13 +114,12 @@ buscador.addEventListener("keyup", function() {
 // === ELIMINAR CUPÓN ===
 async function eliminarCupon(id) {
   try {
-    const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-    if (!response.ok) throw new Error("Error al eliminar el cupón");
+    await fetchSeguro(`${API_URL}/${id}`, { method: "DELETE" });
     alert("Cupón eliminado correctamente");
     cargarCupones();
   } catch (error) {
     console.error(error);
-    alert("Hubo un error al eliminar el cupón");
+    alert("Hubo un error al eliminar el cupón: " + error.message);
   }
 }
 
@@ -116,13 +130,10 @@ form.addEventListener('submit', async (e) => {
   const data = Object.fromEntries(formData.entries());
 
   try {
-    const response = await fetch(API_URL, {
+    await fetchSeguro(API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-
-    if (!response.ok) throw new Error("Error al guardar el cupón");
 
     alert("Cupón agregado exitosamente");
     modal.style.display = 'none';
@@ -130,7 +141,7 @@ form.addEventListener('submit', async (e) => {
     cargarCupones();
   } catch (error) {
     console.error(error);
-    alert("Hubo un error al guardar el cupón");
+    alert("Hubo un error al guardar el cupón: " + error.message);
   }
 });
 

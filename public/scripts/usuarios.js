@@ -1,8 +1,11 @@
-//-------------------------------------------
-// usuarios.js
-// Fecha: 20-Oct-2025
-// Autores: Equipo 2 - Gpo 401
-//-------------------------------------------
+/*
+-------------------------------------------
+usuarios.js
+Lista y filtra usuarios + agrega admins
+Fecha: 20-Oct-2025
+Autores: Equipo 2 - Gpo 401
+-------------------------------------------
+*/
 
 const tablaUsuarios = document.getElementById("tablaUsuarios");
 const encabezadoTabla = document.getElementById("encabezadoTabla");
@@ -14,51 +17,59 @@ const guardarAdmin = document.getElementById("guardarAdmin");
 let usuariosActuales = [];
 
 /* ==============================
-   CARGAR USUARIOS (CON SEGURIDAD)
+   FUNCION PARA FETCH CON TOKEN
+   ============================== */
+async function fetchSeguro(url, options = {}) {
+  const token = localStorage.getItem("token");
+  options.headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {}),
+  };
+  if (token) options.headers["Authorization"] = `Bearer ${token}`;
+  const response = await fetch(url, options);
+
+  if (response.status === 401) throw new Error("Token requerido o inválido. Inicia sesión.");
+  if (response.status === 403) throw new Error("No autorizado: Rol insuficiente.");
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    data = {};
+  }
+
+  if (!response.ok) throw new Error(data.error || data.message || "Error en la solicitud.");
+
+  return data;
+}
+
+/* ==============================
+   CARGAR USUARIOS
    ============================== */
 async function cargarUsuarios(tipo = "all") {
   const baseUrl = "https://bj-api.site/beneficioJoven";
   let url;
 
   switch (tipo) {
-    case "jovenes":
-      url = `${baseUrl}/jovenes`;
-      break;
-    case "admins":
-      url = `${baseUrl}/admins`;
-      break;
-    default:
-      url = `${baseUrl}/allusers`;
+    case "jovenes": url = `${baseUrl}/jovenes`; break;
+    case "merchants": url = `${baseUrl}/merchants`; break;
+    case "admins": url = `${baseUrl}/admins`; break;
+    default: url = `${baseUrl}/allusers`;
   }
-
-  const token = localStorage.getItem("token");
-  const headers = { "Content-Type": "application/json" };
-  if (token) headers["Authorization"] = `Bearer ${token}`;
 
   tablaUsuarios.innerHTML = "<tr><td colspan='4'>Cargando usuarios...</td></tr>";
 
   try {
-    const response = await fetch(url, { method: "GET", headers });
-
-    // Seguridad: manejo de tokens y permisos
-    if (response.status === 401) throw new Error("Token requerido o inválido. Inicia sesión.");
-    if (response.status === 403) throw new Error("No autorizado: rol insuficiente.");
-
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data?.error || data?.message || "Error al obtener usuarios.");
-
+    const data = await fetchSeguro(url);
     usuariosActuales = data;
     renderTabla(data, tipo);
   } catch (error) {
-    console.error("❌ Error desde el servidor:", error);
-
+    console.error("❌ Error al cargar usuarios:", error);
+    tablaUsuarios.innerHTML = `<tr><td colspan='4' style='color:red; padding:10px;'>⚠️ ${error.message}</td></tr>`;
     if (error.message.includes("Token")) {
       localStorage.removeItem("token");
       window.location.href = "/index.html";
-      return;
     }
-
-    tablaUsuarios.innerHTML = `<tr><td colspan='4' style='color:red;'>⚠️ ${error.message}</td></tr>`;
   }
 }
 
@@ -73,7 +84,7 @@ function renderTabla(data, tipo) {
   else if (tipo === "jovenes") columnas = ["ID", "Nombre Completo", "CURP", "Nacimiento"];
   else if (tipo === "admins") columnas = ["ID", "Nombre", "Nivel de acceso"];
 
-  columnas.forEach((col) => {
+  columnas.forEach(col => {
     const th = document.createElement("th");
     th.textContent = col;
     encabezadoTabla.appendChild(th);
@@ -84,57 +95,54 @@ function renderTabla(data, tipo) {
     return;
   }
 
-  tablaUsuarios.innerHTML = data
-    .map((u) => {
-      if (tipo === "all") {
-        return `<tr>
-          <td>${u.id}</td>
-          <td>${u.email}</td>
-          <td>${u.role}</td>
-          <td>${new Date(u.created_at).toLocaleDateString()}</td>
-        </tr>`;
-      } else if (tipo === "jovenes") {
-        return `<tr>
-          <td>${u.user_id}</td>
-          <td>${u.full_name || "-"}</td>
-          <td>${u.curp || "-"}</td>
-          <td>${u.birth_date || "-"}</td>
-        </tr>`;
-      } else if (tipo === "admins") {
-        return `<tr>
-          <td>${u.user_id}</td>
-          <td>${u.full_name || "-"}</td>
-          <td>${u.is_super_admin ? "Super Admin" : "Admin"}</td>
-        </tr>`;
-      }
-    })
-    .join("");
+  tablaUsuarios.innerHTML = data.map(u => {
+    if (tipo === "all") {
+      return `<tr>
+        <td>${u.id}</td>
+        <td>${u.email}</td>
+        <td>${u.role}</td>
+        <td>${new Date(u.created_at).toLocaleDateString()}</td>
+      </tr>`;
+    } else if (tipo === "jovenes") {
+      return `<tr>
+        <td>${u.user_id}</td>
+        <td>${u.full_name || "-"}</td>
+        <td>${u.curp || "-"}</td>
+        <td>${u.birth_date || "-"}</td>
+      </tr>`;
+    } else if (tipo === "admins") {
+      return `<tr>
+        <td>${u.user_id}</td>
+        <td>${u.full_name || "-"}</td>
+        <td>${u.is_super_admin ? "Super Admin" : "Admin"}</td>
+      </tr>`;
+    }
+  }).join("");
 }
 
 /* ==============================
    BUSCADOR
    ============================== */
-document.getElementById("buscador").addEventListener("input", (e) => {
+document.getElementById("buscador").addEventListener("input", e => {
   const texto = e.target.value.toLowerCase();
   const tipo = filtroSelect.value;
-  const filtrados = usuariosActuales.filter((u) =>
-    Object.values(u).some((val) => String(val).toLowerCase().includes(texto))
+  const filtrados = usuariosActuales.filter(u =>
+    Object.values(u).some(val => String(val).toLowerCase().includes(texto))
   );
   renderTabla(texto.trim() ? filtrados : usuariosActuales, tipo);
 });
 
 /* ==============================
-   FILTRO
+   FILTRO DE USUARIOS
    ============================== */
-filtroSelect.addEventListener("change", (e) => {
+filtroSelect.addEventListener("change", e => {
   const tipo = e.target.value;
   cargarUsuarios(tipo);
-  // Mostrar botón de agregar solo en admins
   btnAgregarAdmin.style.display = tipo === "admins" ? "inline-block" : "none";
 });
 
 /* ==============================
-   MODAL
+   MODAL AGREGAR ADMIN
    ============================== */
 btnAgregarAdmin.addEventListener("click", () => {
   modalAdmin.style.display = "flex";
@@ -144,12 +152,12 @@ cancelarAdmin.addEventListener("click", () => {
   modalAdmin.style.display = "none";
 });
 
-window.addEventListener("click", (e) => {
+window.addEventListener("click", e => {
   if (e.target === modalAdmin) modalAdmin.style.display = "none";
 });
 
 /* ==============================
-   GUARDAR ADMIN (CON SEGURIDAD)
+   GUARDAR ADMIN
    ============================== */
 guardarAdmin.addEventListener("click", async () => {
   const email = document.getElementById("emailAdmin").value.trim();
@@ -166,44 +174,19 @@ guardarAdmin.addEventListener("click", async () => {
     email,
     password,
     role: "admin",
-    profileData: {
-      full_name: fullName,
-      is_super_admin: isSuperAdmin,
-    },
+    profileData: { full_name: fullName, is_super_admin: isSuperAdmin },
   };
 
-  const token = localStorage.getItem("token");
-  if (!token) {
-    alert("⚠️ Token no encontrado. Inicia sesión nuevamente.");
-    window.location.href = "/index.html";
-    return;
-  }
-
   try {
-    const response = await fetch("https://bj-api.site/beneficioJoven/auth/register/", {
+    await fetchSeguro("https://bj-api.site/beneficioJoven/auth/register/", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(NEW_ADMIN_DATA),
+      body: JSON.stringify(NEW_ADMIN_DATA)
     });
-
-    let data;
-    try {
-      data = await response.json();
-    } catch {
-      const text = await response.text();
-      console.error("⚠️ Respuesta no-JSON del servidor:", text);
-      throw new Error("El servidor devolvió HTML en lugar de JSON. Verifica el endpoint o permisos.");
-    }
-
-    if (!response.ok) throw new Error(data.error || data.message || "❌ No se pudo crear el admin.");
 
     alert("✅ Admin agregado correctamente.");
     modalAdmin.style.display = "none";
     document.getElementById("formAdmin").reset();
-    await cargarUsuarios("admins");
+    cargarUsuarios("admins");
   } catch (error) {
     console.error("❌ Error al agregar admin:", error);
     alert("❌ " + error.message);
@@ -214,4 +197,4 @@ guardarAdmin.addEventListener("click", async () => {
    INICIALIZACIÓN
    ============================== */
 cargarUsuarios();
-btnAgregarAdmin.style.display = "none";
+btnAgregarAdmin.style.display = filtroSelect.value === "admins" ? "inline-block" : "none";
