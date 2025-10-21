@@ -51,7 +51,6 @@ async function cargarEstadisticas() {
         document.getElementById('cupones_unicos_redimidos').textContent = stats.cupones_unicos_redimidos ?? '0';
     } catch (error) {
         console.error("❌ Error al cargar estadísticas:", error);
-        alert("No se pudieron cargar las estadísticas. Intenta más tarde.");
     }
 }
 
