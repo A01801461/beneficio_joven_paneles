@@ -19,6 +19,7 @@ const API_URL = "https://bj-api.site/beneficioJoven/coupons";
 // === FETCH SEGURO CON TOKEN ===
 async function fetchSeguro(url, options = {}) {
   const token = localStorage.getItem("token");
+  window.location.href = "/index.html";
   options.headers = {
     "Content-Type": "application/json",
     ...(options.headers || {}),

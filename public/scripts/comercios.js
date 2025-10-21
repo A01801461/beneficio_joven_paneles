@@ -14,6 +14,7 @@ let comerciosActuales = [];
 // === FETCH SEGURO CON TOKEN ===
 async function fetchSeguro(url, options = {}) {
   const token = localStorage.getItem("token");
+  window.location.href = "/index.html";
   options.headers = {
     "Content-Type": "application/json",
     ...(options.headers || {}),

@@ -64,8 +64,8 @@ async function cargarUsuarios(tipo = "all") {
     usuariosActuales = data;
     renderTabla(data, tipo);
   } catch (error) {
-    console.error("❌ Error al cargar usuarios:", error);
-    tablaUsuarios.innerHTML = `<tr><td colspan='4' style='color:red; padding:10px;'>⚠️ ${error.message}</td></tr>`;
+    console.error(" Error al cargar usuarios:", error);
+    tablaUsuarios.innerHTML = `<tr><td colspan='4' style='color:red; padding:10px;'> ${error.message}</td></tr>`;
     if (error.message.includes("Token")) {
       localStorage.removeItem("token");
       window.location.href = "/index.html";

@@ -12,6 +12,7 @@
 // === FETCH SEGURO CON TOKEN ===
 async function fetchSeguro(url, options = {}) {
     const token = localStorage.getItem("token");
+    window.location.href = "/index.html";
     options.headers = {
         "Content-Type": "application/json",
         ...(options.headers || {}),
@@ -34,6 +35,7 @@ async function fetchSeguro(url, options = {}) {
 async function cargarEstadisticas() {
     try {
         const data = await fetchSeguro('https://bj-api.site/beneficioJoven/stats');
+        window.location.href = "/index.html";
 
         // Se espera un array con un objeto dentro
         const stats = data[0] ?? {};
