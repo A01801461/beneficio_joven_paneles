@@ -242,3 +242,17 @@ td img {
   gap: 10px;
   margin-top: 20px;
 }
+
+.eliminar-btn {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 1.4em;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.eliminar-btn:hover {
+  color: #c0392b;
+  transform: scale(1.1);
+}
