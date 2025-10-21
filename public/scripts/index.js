@@ -77,7 +77,7 @@ document.getElementById("login-form").addEventListener("submit", async function 
     localStorage.setItem("userRole", data.role);
     localStorage.setItem("userId", data.id);
     console.log("Login exitoso. Redirigiendo a statsAdmins.html...");
-    window.location.href = "index.html";
+    window.location.href = "statsAdmins.html";
 
   } catch (error) {
     console.error("Error de conexión:", error);

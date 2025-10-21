@@ -188,7 +188,7 @@ guardarAdmin.addEventListener("click", async () => {
     document.getElementById("formAdmin").reset();
     cargarUsuarios("admins");
   } catch (error) {
-    console.error("❌ Error al agregar admin:", error);
+    console.error(" Error al agregar admin:", error);
     alert("❌ " + error.message);
   }
 });

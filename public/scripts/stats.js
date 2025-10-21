@@ -12,12 +12,20 @@
 // === FETCH SEGURO CON TOKEN ===
 async function fetchSeguro(url, options = {}) {
     const token = localStorage.getItem("token");
-    window.location.href = "/index.html";
+    
+    // Solo redirigir si no hay token
+    if (!token) {
+        window.location.href = "index.html"; // sin la /
+        return; // detener la ejecución
+    }
+
     options.headers = {
         "Content-Type": "application/json",
         ...(options.headers || {}),
     };
-    if (token) options.headers["Authorization"] = `Bearer ${token}`;
+
+    // Agregar token solo si existe
+    options.headers["Authorization"] = `Bearer ${token}`;
 
     const response = await fetch(url, options);
 
@@ -31,11 +39,11 @@ async function fetchSeguro(url, options = {}) {
     return data;
 }
 
+
 // === CARGAR ESTADISTICAS ===
 async function cargarEstadisticas() {
     try {
         const data = await fetchSeguro('https://bj-api.site/beneficioJoven/stats');
-        window.location.href = "/index.html";
 
         // Se espera un array con un objeto dentro
         const stats = data[0] ?? {};
