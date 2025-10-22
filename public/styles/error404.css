@@ -1,44 +1,68 @@
-/* === ESTILOS EXTRA SOLO PARA ESTA PÁGINA === */
-    .contenido-pagina {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      flex-grow: 1;
+    /* Fondo y alineación general */
+    body {
+      margin: 0;
+      padding: 0;
       height: 100vh;
-      background-color: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: linear-gradient(180deg, #f0f4ff, #e3ebff);
+      font-family: 'Poppins', sans-serif;
+      color: #1d3557;
+      text-align: center;
     }
 
-    .error-titulo {
-      font-size: 7rem;
+    /* Animación de entrada */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    img {
+      width: 180px;
+      margin-bottom: 20px;
+      animation: fadeUp 0.8s ease-out;
+    }
+
+    h1 {
+      font-size: 90px;
+      margin: 0;
+      color: #1d3557;
       font-weight: 700;
-      color: #55408a;
-      margin-bottom: 10px;
+      animation: fadeUp 1s ease-out;
     }
 
-    .error-subtitulo {
-      font-size: 1.5rem;
-      color: #7c7c7c;
-      margin-bottom: 30px;
+    p {
+      font-size: 22px;
+      color: #457b9d;
+      margin: 10px 0 40px;
+      animation: fadeUp 1.2s ease-out;
     }
 
-    .btn-volver {
-      padding: 12px 30px;
-      font-size: 1rem;
-      color: white;
-      background: linear-gradient(to right, #7cbcde, #55408a);
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+    /* Botón estilizado */
+    .btn {
+      display: inline-block;
+      padding: 14px 35px;
+      background-color: #1d3557;
+      color: #fff;
       text-decoration: none;
+      border-radius: 12px;
       font-weight: 600;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      font-size: 18px;
+      transition: 0.3s ease;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      animation: fadeUp 1.4s ease-out;
     }
 
-    .btn-volver:hover {
-      scale: 1.05;
-      opacity: 0.9;
+    .btn:hover {
+      background-color: #457b9d;
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     }
-
-    
