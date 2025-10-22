@@ -1,0 +1,44 @@
+/* === ESTILOS EXTRA SOLO PARA ESTA PÁGINA === */
+    .contenido-pagina {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1;
+      height: 100vh;
+      background-color: #f8f9fa;
+    }
+
+    .error-titulo {
+      font-size: 7rem;
+      font-weight: 700;
+      color: #55408a;
+      margin-bottom: 10px;
+    }
+
+    .error-subtitulo {
+      font-size: 1.5rem;
+      color: #7c7c7c;
+      margin-bottom: 30px;
+    }
+
+    .btn-volver {
+      padding: 12px 30px;
+      font-size: 1rem;
+      color: white;
+      background: linear-gradient(to right, #7cbcde, #55408a);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .btn-volver:hover {
+      scale: 1.05;
+      opacity: 0.9;
+    }
+
+    
