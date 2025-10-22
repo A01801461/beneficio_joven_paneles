@@ -242,13 +242,13 @@ td img {
 .eliminar-btn {
   background: none;
   border: none;
-  color: #e74c3c;
-  font-size: 1.4em;
+  color: #e74c3c;       /* Rojo visible */
+  font-size: 1.4rem;    /* Tamaño del ícono */
   cursor: pointer;
-  transition: 0.2s;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .eliminar-btn:hover {
-  color: #c0392b;
-  transform: scale(1.1);
+  color: #c0392b;       /* Rojo más oscuro al pasar el mouse */
+  transform: scale(1.2); /* Efecto de agrandado */
 }

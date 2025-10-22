@@ -15,21 +15,27 @@ const modalAdmin = document.getElementById("modalAgregarAdmin");
 const cancelarAdmin = document.getElementById("cancelarAdmin");
 const guardarAdmin = document.getElementById("guardarAdmin");
 let usuariosActuales = [];
+let esSuperAdmin = false; // <- para verificar permisos
 
 /* ==============================
-   FUNCION PARA FETCH CON TOKEN
+   FETCH SEGURO CON TOKEN
    ============================== */
 async function fetchSeguro(url, options = {}) {
   const token = localStorage.getItem("token");
+  if (!token) {
+    window.location.href = "index.html";
+    return;
+  }
+
   options.headers = {
     "Content-Type": "application/json",
     ...(options.headers || {}),
   };
-  if (token) options.headers["Authorization"] = `Bearer ${token}`;
-  const response = await fetch(url, options);
+  options.headers["Authorization"] = `Bearer ${token}`;
 
-  if (response.status === 401) throw new Error("Token requerido o inválido. Inicia sesión.");
-  if (response.status === 403) throw new Error("No autorizado: Rol insuficiente.");
+  const response = await fetch(url, options);
+  if (response.status === 401) throw new Error("Token inválido. Inicia sesión.");
+  if (response.status === 403) throw new Error("No autorizado.");
 
   let data;
   try {
@@ -39,8 +45,20 @@ async function fetchSeguro(url, options = {}) {
   }
 
   if (!response.ok) throw new Error(data.error || data.message || "Error en la solicitud.");
-
   return data;
+}
+
+/* ==============================
+   VERIFICAR SI ES SUPER ADMIN
+   ============================== */
+async function verificarSuperAdmin() {
+  try {
+    const perfil = await fetchSeguro("https://bj-api.site/beneficioJoven/auth/me");
+    esSuperAdmin = perfil?.role === "super_admin";
+  } catch (err) {
+    console.warn("⚠️ No se pudo verificar el rol del usuario:", err.message);
+    esSuperAdmin = false;
+  }
 }
 
 /* ==============================
@@ -64,7 +82,7 @@ async function cargarUsuarios(tipo = "all") {
     usuariosActuales = data;
     renderTabla(data, tipo);
   } catch (error) {
-    console.error(" Error al cargar usuarios:", error);
+    console.error("❌ Error al cargar usuarios:", error);
     tablaUsuarios.innerHTML = `<tr><td colspan='4' style='color:red; padding:10px;'> ${error.message}</td></tr>`;
     if (error.message.includes("Token")) {
       localStorage.removeItem("token");
@@ -80,9 +98,9 @@ function renderTabla(data, tipo) {
   encabezadoTabla.innerHTML = "";
   let columnas = [];
 
-  if (tipo === "all") columnas = ["ID", "Email", "Rol", "Fecha de creación"];
-  else if (tipo === "jovenes") columnas = ["ID", "Nombre Completo", "CURP", "Nacimiento"];
-  else if (tipo === "admins") columnas = ["ID", "Nombre", "Nivel de acceso"];
+  if (tipo === "all") columnas = ["ID", "Email", "Rol", "Creado"];
+  else if (tipo === "jovenes") columnas = ["ID", "Nombre Completo", "CURP", "Nacimiento", "Acciones"];
+  else if (tipo === "admins") columnas = ["ID", "Nombre", "Nivel", "Acciones"];
 
   columnas.forEach(col => {
     const th = document.createElement("th");
@@ -97,31 +115,71 @@ function renderTabla(data, tipo) {
 
   tablaUsuarios.innerHTML = data.map(u => {
     if (tipo === "all") {
-      return `<tr>
-        <td>${u.id}</td>
-        <td>${u.email}</td>
-        <td>${u.role}</td>
-        <td>${new Date(u.created_at).toLocaleDateString()}</td>
-      </tr>`;
-    } else if (tipo === "jovenes") {
-      return `<tr>
-        <td>${u.user_id}</td>
-        <td>${u.full_name || "-"}</td>
-        <td>${u.curp || "-"}</td>
-        <td>${u.birth_date || "-"}</td>
-      </tr>`;
+      return `
+        <tr>
+          <td>${u.id}</td>
+          <td>${u.email}</td>
+          <td>${u.role}</td>
+          <td>${new Date(u.created_at).toLocaleDateString()}</td>
+        </tr>`;
     } else if (tipo === "admins") {
-      return `<tr>
-        <td>${u.user_id}</td>
-        <td>${u.full_name || "-"}</td>
-        <td>${u.is_super_admin ? "Super Admin" : "Admin"}</td>
-      </tr>`;
+      return `
+        <tr>
+          <td>${u.user_id}</td>
+          <td>${u.full_name || "-"}</td>
+          <td>${u.is_super_admin ? "Super Admin" : "Admin"}</td>
+          <td>
+            <button class="eliminar-btn" data-id="${u.user_id}">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+        </td>
+          
+        </tr>`;
+    } else {
+      return `
+        <tr>
+          <td>${u.user_id}</td>
+          <td>${u.full_name || "-"}</td>
+          <td>${u.curp || "-"}</td>
+          <td>${u.birth_date || "-"}</td>
+          <td>
+          <button class="eliminar-btn" data-id="${u.user_id}">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+        </tr>`;
     }
   }).join("");
+
+  // Agregar eventos de eliminación
+  document.querySelectorAll(".eliminar-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.getAttribute("data-id");
+      if (confirm(`¿Seguro que deseas eliminar al usuario con ID ${id}?`)) {
+        await eliminarUsuario(id);
+      }
+    });
+  });
 }
 
 /* ==============================
-   BUSCADOR
+   ELIMINAR USUARIO
+   ============================== */
+async function eliminarUsuario(id) {
+  try {
+    const url = `https://bj-api.site/beneficioJoven/users/${id}`;
+    await fetchSeguro(url, { method: "DELETE" });
+    alert("✅ Usuario eliminado correctamente.");
+    cargarUsuarios(filtroSelect.value);
+  } catch (error) {
+    console.error("❌ Error al eliminar usuario:", error);
+    alert("No se pudo eliminar el usuario: " + error.message);
+  }
+}
+
+
+/* ==============================
+   BUSCADOR 
    ============================== */
 document.getElementById("buscador").addEventListener("input", e => {
   const texto = e.target.value.toLowerCase();
@@ -196,5 +254,8 @@ guardarAdmin.addEventListener("click", async () => {
 /* ==============================
    INICIALIZACIÓN
    ============================== */
-cargarUsuarios();
-btnAgregarAdmin.style.display = filtroSelect.value === "admins" ? "inline-block" : "none";
+(async () => {
+  await verificarSuperAdmin(); // verificar rol antes de cargar
+  cargarUsuarios();
+  btnAgregarAdmin.style.display = filtroSelect.value === "admins" ? "inline-block" : "none";
+})();
