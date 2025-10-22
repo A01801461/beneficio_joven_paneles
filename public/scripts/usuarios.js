@@ -98,9 +98,9 @@ function renderTabla(data, tipo) {
   encabezadoTabla.innerHTML = "";
   let columnas = [];
 
-  if (tipo === "all") columnas = ["ID", "Email", "Rol", "Creado"];
-  else if (tipo === "jovenes") columnas = ["ID", "Nombre Completo", "CURP", "Nacimiento", "Acciones"];
-  else if (tipo === "admins") columnas = ["ID", "Nombre", "Nivel", "Acciones"];
+  if (tipo === "all") columnas = ["Email", "Rol", "Creado"];
+  else if (tipo === "jovenes") columnas = ["Nombre Completo", "CURP", "Nacimiento", "Acciones"];
+  else if (tipo === "admins") columnas = ["Nombre", "Nivel", "Acciones"];
 
   columnas.forEach(col => {
     const th = document.createElement("th");
@@ -117,7 +117,6 @@ function renderTabla(data, tipo) {
     if (tipo === "all") {
       return `
         <tr>
-          <td>${u.id}</td>
           <td>${u.email}</td>
           <td>${u.role}</td>
           <td>${new Date(u.created_at).toLocaleDateString()}</td>
@@ -125,7 +124,6 @@ function renderTabla(data, tipo) {
     } else if (tipo === "admins") {
       return `
         <tr>
-          <td>${u.user_id}</td>
           <td>${u.full_name || "-"}</td>
           <td>${u.is_super_admin ? "Super Admin" : "Admin"}</td>
           <td>
@@ -138,7 +136,6 @@ function renderTabla(data, tipo) {
     } else {
       return `
         <tr>
-          <td>${u.user_id}</td>
           <td>${u.full_name || "-"}</td>
           <td>${u.curp || "-"}</td>
           <td>${u.birth_date || "-"}</td>
