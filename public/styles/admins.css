@@ -12,13 +12,6 @@ body {
   align-items: center;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #333;
-}
-
 /* Contenedor de filtros */
 .filtro-container {
   display: flex;
