@@ -102,16 +102,19 @@ function renderTablaComercios(data) {
    ============================== */
 async function eliminarComercio(id) {
   try {
-    await fetchSeguro(`https://bj-api.site/beneficioJoven/merchants/${id}`, {
+    const url = `https://bj-api.site/beneficioJoven/users/${id}`;
+    await fetchSeguro(url, {
       method: "DELETE",
     });
-    alert("Comercio eliminado correctamente.");
+
+    alert("✅ Comercio eliminado correctamente.");
     cargarComercios(); // recargar lista
   } catch (error) {
     console.error("❌ Error al eliminar comercio:", error);
     alert("No se pudo eliminar el comercio: " + error.message);
   }
 }
+
 
 /* ==============================
    BUSCADOR
