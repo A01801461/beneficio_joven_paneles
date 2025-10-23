@@ -119,15 +119,7 @@ tbody tr:hover {
   background-color: #f1f7ff;
 }
 
-/* === IMÁGENES EN CELDAS === */
-td img {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-/* === BOTONES === */
+/* === BOTONES PRINCIPALES === */
 .contenedor-botones {
   display: flex;
   justify-content: center;
@@ -160,10 +152,11 @@ td img {
   background-color: #aaa;
   color: white;
   border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
+  padding: 4px 10px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+  line-height: 1;
   transition: background-color 0.2s ease;
 }
 
@@ -171,7 +164,21 @@ td img {
   background-color: #888;
 }
 
-/* === MODAL === */
+.eliminar-btn {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.eliminar-btn:hover {
+  color: #c0392b;
+  transform: scale(1.2);
+}
+
+/* === MODAL MEJORADO PARA USUARIOS === */
 .modal {
   display: none;
   position: fixed;
@@ -188,67 +195,180 @@ td img {
   display: flex;
 }
 
-.modal-content {
+#modalAgregarAdmin .modal-content {
   background: #fff;
-  padding: 24px;
-  border-radius: 12px;
-  width: 420px;
-  max-width: 100%;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.18);
-  transform: translateY(0);
+  padding: 0;
+  border-radius: 16px;
+  width: 500px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #3f63a0, #5b53a3);
+  color: white;
+  padding: 20px 28px;
+  border-radius: 16px 16px 0 0;
+}
+
+.modal-header h3 {
   margin: 0;
-}
-
-.modal-content h3 {
-  margin-top: 0;
-  text-align: center;
-  color: #333;
+  text-align: left;
+  color: white;
   font-weight: 600;
+  font-size: 1.3rem;
 }
 
-.modal-content label {
+.form-sections {
+  padding: 28px;
+}
+
+.form-section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #3f63a0;
+  margin-bottom: 18px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #eaeaea;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  flex: 1;
+  position: relative;
+}
+
+.form-group.full-width {
+  flex: 100%;
+}
+
+#formAdmin label {
   display: block;
-  margin-top: 10px;
+  margin-bottom: 6px;
   font-weight: 600;
-  font-size: 14px;
-  color: #333;
+  font-size: 13px;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.modal-content input,
-.modal-content textarea {
+#formAdmin input,
+#formAdmin select,
+#formAdmin textarea {
   width: 100%;
-  padding: 8px;
-  margin-top: 4px;
-  border: 1px solid #ccc;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 14px;
+  font-family: "Poppins", sans-serif;
   transition: all 0.2s ease;
+  box-sizing: border-box;
+  background-color: #fafafa;
 }
 
-.modal-content input:focus,
-.modal-content textarea:focus {
-  border-color: #7cbcde;
-  box-shadow: 0 0 5px rgba(124, 188, 222, 0.3);
+#formAdmin input:focus,
+#formAdmin select:focus,
+#formAdmin textarea:focus {
+  border-color: #5b53a3;
+  background-color: #fff;
   outline: none;
+  box-shadow: 0 0 0 2px rgba(91, 83, 163, 0.1);
 }
 
+/* Radio buttons mejorados */
+.radio-group {
+  display: flex;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+  color: #333;
+  cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+  width: auto;
+  margin: 0;
+  transform: scale(1.1);
+}
+
+/* Botones del modal mejorados */
 .modal-buttons {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 12px;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #eaeaea;
 }
 
-.eliminar-btn {
-  background: none;
-  border: none;
-  color: #e74c3c;       /* Rojo visible */
-  font-size: 1.4rem;    /* Tamaño del ícono */
+#modalAgregarAdmin .cancelar-btn {
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   cursor: pointer;
-  transition: transform 0.2s ease, color 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.2s ease;
+  background: #f8f9fa;
+  color: #666;
 }
 
-.eliminar-btn:hover {
-  color: #c0392b;       /* Rojo más oscuro al pasar el mouse */
-  transform: scale(1.2); /* Efecto de agrandado */
+#modalAgregarAdmin .cancelar-btn:hover {
+  background: #e9ecef;
+  border-color: #ccc;
+}
+
+#modalAgregarAdmin .guardar-btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.2s ease;
+  background: linear-gradient(to top right, #3f63a0, #5b53a3, #6b47a7);
+  color: white;
+}
+
+#modalAgregarAdmin .guardar-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(91, 83, 163, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 520px) {
+  .form-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  #modalAgregarAdmin .modal-content {
+    width: 95vw;
+  }
+  
+  .radio-group {
+    flex-direction: column;
+    gap: 10px;
+  }
 }

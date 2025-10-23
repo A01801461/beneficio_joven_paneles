@@ -2,8 +2,8 @@
 -------------------------------------------
 usuarios.js
 Lista y filtra usuarios + agrega admins
-Fecha: 20-Oct-2025
-Autores: Equipo 2 - Gpo 401
+Versión simplificada (sin super admin)
+Fecha: 22-Oct-2025
 -------------------------------------------
 */
 
@@ -15,10 +15,9 @@ const modalAdmin = document.getElementById("modalAgregarAdmin");
 const cancelarAdmin = document.getElementById("cancelarAdmin");
 const guardarAdmin = document.getElementById("guardarAdmin");
 let usuariosActuales = [];
-let esSuperAdmin = false; // <- para verificar permisos
 
 /* ==============================
-   FETCH SEGURO CON TOKEN
+   FETCH CON TOKEN
    ============================== */
 async function fetchSeguro(url, options = {}) {
   const token = localStorage.getItem("token");
@@ -30,35 +29,20 @@ async function fetchSeguro(url, options = {}) {
   options.headers = {
     "Content-Type": "application/json",
     ...(options.headers || {}),
+    "Authorization": `Bearer ${token}`
   };
-  options.headers["Authorization"] = `Bearer ${token}`;
 
   const response = await fetch(url, options);
   if (response.status === 401) throw new Error("Token inválido. Inicia sesión.");
   if (response.status === 403) throw new Error("No autorizado.");
 
-  let data;
+  let data = {};
   try {
     data = await response.json();
-  } catch {
-    data = {};
-  }
+  } catch {}
 
   if (!response.ok) throw new Error(data.error || data.message || "Error en la solicitud.");
   return data;
-}
-
-/* ==============================
-   VERIFICAR SI ES SUPER ADMIN
-   ============================== */
-async function verificarSuperAdmin() {
-  try {
-    const perfil = await fetchSeguro("https://bj-api.site/beneficioJoven/auth/me");
-    esSuperAdmin = perfil?.role === "super_admin";
-  } catch (err) {
-    console.warn("⚠️ No se pudo verificar el rol del usuario:", err.message);
-    esSuperAdmin = false;
-  }
 }
 
 /* ==============================
@@ -83,7 +67,7 @@ async function cargarUsuarios(tipo = "all") {
     renderTabla(data, tipo);
   } catch (error) {
     console.error("❌ Error al cargar usuarios:", error);
-    tablaUsuarios.innerHTML = `<tr><td colspan='4' style='color:red; padding:10px;'> ${error.message}</td></tr>`;
+    tablaUsuarios.innerHTML = `<tr><td colspan='4' style='color:red; padding:10px;'>${error.message}</td></tr>`;
     if (error.message.includes("Token")) {
       localStorage.removeItem("token");
       window.location.href = "/index.html";
@@ -100,7 +84,7 @@ function renderTabla(data, tipo) {
 
   if (tipo === "all") columnas = ["Email", "Rol", "Creado"];
   else if (tipo === "jovenes") columnas = ["Nombre Completo", "CURP", "Nacimiento", "Acciones"];
-  else if (tipo === "admins") columnas = ["Nombre", "Nivel", "Acciones"];
+  else if (tipo === "admins") columnas = ["Nombre", "Tipo de Admin", "Acciones"];
 
   columnas.forEach(col => {
     const th = document.createElement("th");
@@ -121,34 +105,39 @@ function renderTabla(data, tipo) {
           <td>${u.role}</td>
           <td>${new Date(u.created_at).toLocaleDateString()}</td>
         </tr>`;
-    } else if (tipo === "admins") {
+    } 
+    else if (tipo === "admins") {
+      const tipoAdmin = u.profileData?.is_super_admin || u.is_super_admin
+        ? "Super Admin"
+        : "Admin";
+
       return `
         <tr>
-          <td>${u.full_name || "-"}</td>
-          <td>${u.is_super_admin ? "Super Admin" : "Admin"}</td>
+          <td>${u.profileData?.full_name || u.full_name || "-"}</td>
+          <td>${tipoAdmin}</td>
           <td>
             <button class="eliminar-btn" data-id="${u.user_id}">
               <i class="fas fa-trash-alt"></i>
             </button>
-        </td>
-          
+          </td>
         </tr>`;
-    } else {
+    } 
+    else {
       return `
         <tr>
           <td>${u.full_name || "-"}</td>
           <td>${u.curp || "-"}</td>
           <td>${u.birth_date || "-"}</td>
           <td>
-          <button class="eliminar-btn" data-id="${u.user_id}">
-            <i class="fas fa-trash-alt"></i>
-          </button>
-        </td>
+            <button class="eliminar-btn" data-id="${u.user_id}">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </td>
         </tr>`;
     }
   }).join("");
 
-  // Agregar eventos de eliminación
+  // Eventos de eliminación
   document.querySelectorAll(".eliminar-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
       const id = btn.getAttribute("data-id");
@@ -173,7 +162,6 @@ async function eliminarUsuario(id) {
     alert("No se pudo eliminar el usuario: " + error.message);
   }
 }
-
 
 /* ==============================
    BUSCADOR 
@@ -212,9 +200,11 @@ window.addEventListener("click", e => {
 });
 
 /* ==============================
-   GUARDAR ADMIN
+   GUARDAR ADMIN (con radio Super Admin)
    ============================== */
-guardarAdmin.addEventListener("click", async () => {
+guardarAdmin.addEventListener("click", async (e) => {
+  e.preventDefault();
+
   const email = document.getElementById("emailAdmin").value.trim();
   const password = document.getElementById("passwordAdmin").value.trim();
   const fullName = document.getElementById("nombreAdmin").value.trim();
@@ -228,31 +218,33 @@ guardarAdmin.addEventListener("click", async () => {
   const NEW_ADMIN_DATA = {
     email,
     password,
-    role: "admin",
-    profileData: { full_name: fullName, is_super_admin: isSuperAdmin },
+    role: isSuperAdmin ? "super_admin" : "admin",
+    profileData: {
+      full_name: fullName,
+      is_super_admin: isSuperAdmin
+    }
   };
 
   try {
-    await fetchSeguro("https://bj-api.site/beneficioJoven/auth/register/", {
+    await fetchSeguro("https://bj-api.site/beneficioJoven/auth/register", {
       method: "POST",
       body: JSON.stringify(NEW_ADMIN_DATA)
     });
 
-    alert("✅ Admin agregado correctamente.");
+    alert(`✅ ${isSuperAdmin ? "Super admin" : "Admin"} agregado correctamente.`);
     modalAdmin.style.display = "none";
     document.getElementById("formAdmin").reset();
     cargarUsuarios("admins");
   } catch (error) {
-    console.error(" Error al agregar admin:", error);
+    console.error("❌ Error al agregar admin:", error);
     alert("❌ " + error.message);
   }
 });
 
+
+
 /* ==============================
    INICIALIZACIÓN
    ============================== */
-(async () => {
-  await verificarSuperAdmin(); // verificar rol antes de cargar
-  cargarUsuarios();
-  btnAgregarAdmin.style.display = filtroSelect.value === "admins" ? "inline-block" : "none";
-})();
+cargarUsuarios();
+btnAgregarAdmin.style.display = filtroSelect.value === "admins" ? "inline-block" : "none";

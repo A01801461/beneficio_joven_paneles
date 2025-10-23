@@ -1,13 +1,8 @@
 /* === ESTILOS GENERALES === */
 body {
-  font-family: "Poppins", sans-serif;
   background-color: #f8f9fa;
+  font-family: "Poppins", sans-serif;
   margin: 0;
-}
-
-.main-container {
-  display: flex;
-  min-height: 100vh;
 }
 
 .contenido-pagina {
@@ -18,44 +13,68 @@ body {
   align-items: center;
 }
 
-/* === BUSCADOR === */
+/* === FILTROS Y BUSCADOR === */
+.filtro-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 90%;
+  margin-bottom: 15px;
+}
+
+.filtro-busqueda {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #fff;
+  transition: all 0.2s ease;
+}
+
+select:hover {
+  border-color: #7cbcde;
+  box-shadow: 0 0 4px rgba(124, 188, 222, 0.4);
+}
+
+/* === INPUT CON ÍCONO (universal para todos los buscadores) === */
 .input-icon {
   position: relative;
-  width: 280px;
-  margin-bottom: 15px;
-  margin-left: auto;
-  margin-right: 0;
+  display: flex;
+  align-items: center;
 }
 
 .input-icon i {
   position: absolute;
   left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
   color: #777;
   font-size: 14px;
 }
 
-#buscador {
-  width: 80%;
-  padding: 8px 8px 8px 30px;
+.input-icon input {
+  padding: 8px 12px 8px 32px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
-  outline: none;
+  width: 250px;
   transition: all 0.2s ease;
 }
 
-#buscador:focus {
+.input-icon input:focus {
   border-color: #7cbcde;
   box-shadow: 0 0 5px rgba(124, 188, 222, 0.4);
   outline: none;
 }
 
-/* === CONTENEDOR TABLA === */
+/* === TABLA === */
 .contenedor-tabla {
-  width: 95%;
   background-color: white;
+  width: 95%;
   border-radius: 15px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
   overflow-x: auto;
@@ -63,57 +82,57 @@ body {
   filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.5));
 }
 
-/* === TABLA === */
-#cuponesTable {
+table {
   width: 100%;
   border-collapse: collapse;
   text-align: center;
-  font-size: 14px;
   min-width: 900px;
+  font-size: 14px;
 }
 
-#cuponesTable th {
-  background-color: #f5f5f5;
-  font-weight: 600;
-  color: #333;
-  padding: 12px 10px;
-  border-bottom: 2px solid #e0e0e0;
+thead th {
   position: sticky;
   top: 0;
+  background-color: #f5f5f5;
+  color: #333;
+  font-weight: 600;
+  padding: 12px;
+  border-bottom: 2px solid #e0e0e0;
   z-index: 2;
 }
 
-#cuponesTable td {
-  padding: 12px 10px;
+td {
+  padding: 12px;
   border-bottom: 1px solid #e0e0e0;
-  vertical-align: middle;
   word-wrap: break-word;
 }
 
-#cuponesTable tr:nth-child(odd) {
+tbody tr:nth-child(odd) {
   background-color: #ffffff;
 }
 
-#cuponesTable tr:nth-child(even) {
+tbody tr:nth-child(even) {
   background-color: #fafafa;
 }
 
-#cuponesTable tr:hover {
+tbody tr:hover {
   background-color: #f1f7ff;
 }
 
-/* === DESCRIPCIÓN MÁS ANCHA === */
-#cuponesTable td:nth-child(5) {
-  text-align: left;
-  max-width: 380px;
+/* === IMÁGENES EN CELDAS === */
+td img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
-/* === BOTONES PRINCIPALES === */
+/* === BOTONES === */
 .contenedor-botones {
   display: flex;
   justify-content: center;
   margin-top: 18px;
-  gap: 10px;
+  gap: 11px;
 }
 
 .agregar-btn,
@@ -153,28 +172,7 @@ body {
   background-color: #888;
 }
 
-.eliminar-btn {
-  background: none;
-  border: none;
-  color: #e74c3c;
-  font-size: 1.4rem;
-  cursor: pointer;
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.eliminar-btn:hover {
-  color: #c0392b;
-  transform: scale(1.2);
-}
-
-.no-data {
-  text-align: center;
-  padding: 18px;
-  color: #777;
-  font-size: 15px;
-}
-
-/* === MODAL MEJORADO === */
+/* === MODAL === */
 .modal {
   display: none;
   position: fixed;
@@ -193,6 +191,72 @@ body {
 
 .modal-content {
   background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  width: 420px;
+  max-width: 100%;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+  transform: translateY(0);
+  margin: 0;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  text-align: center;
+  color: #333;
+  font-weight: 600;
+}
+
+.modal-content label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus {
+  border-color: #7cbcde;
+  box-shadow: 0 0 5px rgba(124, 188, 222, 0.3);
+  outline: none;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.eliminar-btn {
+  background: none;
+  border: none;
+  color: #e74c3c;       /* Rojo visible */
+  font-size: 1.4rem;    /* Tamaño del ícono */
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.eliminar-btn:hover {
+  color: #c0392b;       /* Rojo más oscuro al pasar el mouse */
+  transform: scale(1.2); /* Efecto de agrandado */
+}
+
+/* === DISEÑO MEJORADO PARA FORMULARIO DE COMERCIOS === */
+#modalComercio .modal-content {
+  background: #fff;
   padding: 0;
   border-radius: 16px;
   width: 500px;
@@ -202,22 +266,24 @@ body {
   box-shadow: 0 8px 32px rgba(0,0,0,0.12);
 }
 
-.modal-header {
+#modalComercio .modal-header {
   background: linear-gradient(135deg, #3f63a0, #5b53a3);
   color: white;
   padding: 20px 28px;
   border-radius: 16px 16px 0 0;
+  font-family: 'Poppins', sans-serif;
 }
 
-.modal-header h3 {
+#modalComercio .modal-header h3 {
   margin: 0;
   text-align: left;
   color: white;
   font-weight: 600;
   font-size: 1.3rem;
+  font-family: 'Poppins', sans-serif;
 }
 
-.form-sections {
+#modalComercio .form-sections {
   padding: 28px;
 }
 
@@ -232,6 +298,7 @@ body {
   margin-bottom: 18px;
   padding-bottom: 8px;
   border-bottom: 2px solid #eaeaea;
+  font-family: 'Poppins', sans-serif;
 }
 
 .form-row {
@@ -249,19 +316,20 @@ body {
   flex: 100%;
 }
 
-#formAgregar label {
+#formComercio label {
   display: block;
   margin-bottom: 6px;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 13px;
   color: #555;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-family: 'Poppins', sans-serif;
 }
 
-#formAgregar input,
-#formAgregar textarea,
-#formAgregar select {
+#formComercio input,
+#formComercio textarea,
+#formComercio select {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid #ddd;
@@ -271,24 +339,26 @@ body {
   transition: all 0.2s ease;
   box-sizing: border-box;
   background-color: #fafafa;
+  font-family: 'Poppins', sans-serif;
 }
 
-#formAgregar input:focus,
-#formAgregar textarea:focus,
-#formAgregar select:focus {
+#formComercio input:focus,
+#formComercio textarea:focus,
+#formComercio select:focus {
   border-color: #5b53a3;
   background-color: #fff;
   outline: none;
   box-shadow: 0 0 0 2px rgba(91, 83, 163, 0.1);
+  font-family: 'Poppins', sans-serif;
 }
 
-#formAgregar textarea {
+#formComercio textarea {
   resize: vertical;
   min-height: 60px;
 }
 
-/* Botones del modal mejorados */
-.modal-buttons {
+/* Botones mejorados */
+#modalComercio .modal-buttons {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
@@ -297,7 +367,7 @@ body {
   border-top: 1px solid #eaeaea;
 }
 
-#modalAgregar .cancelar-btn {
+#modalComercio .cancelar-btn {
   padding: 10px 20px;
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -310,12 +380,12 @@ body {
   color: #666;
 }
 
-#modalAgregar .cancelar-btn:hover {
+#modalComercio .cancelar-btn:hover {
   background: #e9ecef;
   border-color: #ccc;
 }
 
-#modalAgregar .guardar-btn {
+#modalComercio .guardar-btn {
   padding: 10px 24px;
   border: none;
   border-radius: 6px;
@@ -328,9 +398,10 @@ body {
   color: white;
 }
 
-#modalAgregar .guardar-btn:hover {
+#modalComercio .guardar-btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(91, 83, 163, 0.3);
+  font-family: 'Poppins', sans-serif;
 }
 
 /* Responsive */
@@ -340,7 +411,7 @@ body {
     gap: 10px;
   }
   
-  .modal-content {
+  #modalComercio .modal-content {
     width: 95vw;
   }
 }

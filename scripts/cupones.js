@@ -59,7 +59,7 @@ async function cargarCupones() {
 
     table.innerHTML = `
       <tr>
-        <th>ID</th><th>Comercio</th><th>Código</th><th>Título</th>
+        </th><th>Comercio</th><th>Código</th><th>Título</th>
         <th>Descripción</th><th>Válido hasta</th><th>Límite</th><th>Acciones</th>
       </tr>`;
 
@@ -73,7 +73,6 @@ async function cargarCupones() {
     coupons.forEach(coupon => {
       const row = document.createElement("tr");
       row.innerHTML = `
-        <td>${coupon.coupon_id}</td>
         <td>${coupon.merchant_name}</td>
         <td>${coupon.code}</td>
         <td>${coupon.title}</td>
