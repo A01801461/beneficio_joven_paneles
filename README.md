@@ -9,7 +9,7 @@ El proyecto busca impulsar la participación juvenil y facilitar el acceso a ben
 
 ## 🌟 Componentes principales del proyecto completo
 
-1.  **Aplicación móvil (Kotlin – Android)** ← _este repo_
+1.  **Aplicación móvil (Kotlin – Android)**
     
     -   Código: [https://github.com/PeritiaCodex/BeneficioJoven](https://github.com/PeritiaCodex/BeneficioJoven)
         
@@ -21,7 +21,7 @@ El proyecto busca impulsar la participación juvenil y facilitar el acceso a ben
         
     -   Perfil con preferencias básicas y **favoritos** locales.
         
-2.  **Panel de administración (HTML, CSS, JS)**
+2.  **Panel de administración (HTML, CSS, JS)** ← _este repo_
     
     -   Código: [https://github.com/A01801461/beneficio_joven_paneles](https://github.com/A01801461/beneficio_joven_paneles)
   
