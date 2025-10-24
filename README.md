@@ -5,35 +5,68 @@ Este repositorio contiene el desarrollo de la **aplicación web de administraci�
 
 El proyecto busca impulsar la participación juvenil y facilitar el acceso a beneficios que promuevan el bienestar, la economía local y las oportunidades para los jóvenes de Atizapán.
 
----
+----------
 
-## 🌟 Componentes principales del proyecto completo 
+## 🌟 Componentes principales del proyecto completo
 
-1. **Aplicación móvil (Kotlin – Android)**
+1.  **Aplicación móvil (Kotlin – Android)** ← _este repo_
+    
+    -   Código: [https://github.com/PeritiaCodex/BeneficioJoven](https://github.com/PeritiaCodex/BeneficioJoven)
+        
+    -   Registro e inicio de sesión.
+        
+    -   Consulta de cupones y promociones disponibles.
+        
+    -   Canje digital mediante **QR** o **clave única**.
+        
+    -   Perfil con preferencias básicas y **favoritos** locales.
+        
+2.  **Panel de administración (HTML, CSS, JS)**
+    
+    -   Código: [https://github.com/A01801461/beneficio_joven_paneles](https://github.com/A01801461/beneficio_joven_paneles)
+        
+    -   Gestión de usuarios (jóvenes registrados).
+      
+    -   Alojado en: [https://beneficiojoven.site](https://beneficiojoven.site)
+        
+    -   Alta/edición de comercios.
+        
+    -   Creación y seguimiento de cupones.
+        
+    -   Reportes para el municipio.
+        
+3.  **Servidor Backend (API + lógica de negocio)**
+    
+    -   Código: [https://github.com/A01801461/beneficio_joven_backend](https://github.com/A01801461/beneficio_joven_backend)
+        
+    -   Alojado en: [https://bj-api.site](https://bj-api.site/)
+        
+    -   Autenticación de usuarios y roles.
+        
+    -   Ciclo de vida de cupones (creación, validación, redención).
+        
+    -   API REST para app móvil y panel.
+        
 
-   - Codigo: https://github.com/PeritiaCodex/BeneficioJoven
-   - Registro e inicio de sesión de los jóvenes beneficiarios.
-   - Consulta de cupones y promociones disponibles.
-   - Canje digital mediante código QR o clave única.
-   - Perfil personal con historial de cupones utilizados.
+----------
 
-2. **Panel de administración (HTML, CSS, JS)**
+## 👥 Autores
 
-   - Codigo: https://github.com/A01801461/beneficio_joven_paneles
-   - Gestión de usuarios (jóvenes registrados).
-   - Registro y administración de comercios participantes.
-   - Creación, edición y seguimiento de cupones/promociones.
-   - Reportes y estadísticas de uso para el municipio.
-  
-3. **Servidor Backend (API + lógica de negocio)**
+-   **Astrid Guadalupe Navarro Rojas** — [A01769650@tec.mx](mailto:A01769650@tec.mx)
+    
+-   **Daniel Díaz Romero** — [A01801486@tec.mx](mailto:A01801486@tec.mx)
+    
+-   **David Alejandro Pérez Tabarés** — [A01800971@tec.mx](mailto:A01800971@tec.mx)
+    
+-   **Isaac Abud León** — [A01801461@tec.mx](mailto:A01801461@tec.mx)
+    
+-   **Juan Manuel Torres Rottonda** — [A01800476@tec.mx](mailto:A01800476@tec.mx)
+    
+-   **Luis Ángel Godínez González** — [A01752310@tec.mx](mailto:A01752310@tec.mx)
+    
 
-   - Codigo: https://github.com/A01801461/beneficio_joven_backend
-   - Alojado en https://bj-api.site
-   - Se encarga de la autenticación de usuarios y roles.
-   - Administra el ciclo de vida de los cupones (creación, validación, redención).
-   - Expone un API REST para que lo consuman la aplicación móvil y los paneles web.
 
----
+----------
 
 ## ⚙️ Detalles del Panel de Administradores
 
