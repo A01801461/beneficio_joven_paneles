@@ -70,7 +70,7 @@ El proyecto busca impulsar la participación juvenil y facilitar el acceso a ben
 
 ## ⚙️ Detalles del Panel de Administradores
 
-Una aplicación web **construida con HTML, CSS y JavaScript utilizando Express.** Está diseñada para que los administradores suban y gestionen cupones, administren las cuentas de los comercios y obtengan información sobre los usuarios. Se conecta directamente con la API alojada en https://bj-api.site o en https://github.com/A01801461/beneficio_joven_backend, y utiliza sus endpoints para ofrecer una interfaz de usuario cómoda y amigable que permite administrar la información en la base de datos. Cuenta con seguridad de datos y cifrado, se encuentra alojada de manera segura utilizando el protocolo https.
+Una aplicación web **construida con HTML, CSS y JavaScript** Está diseñada para que los administradores suban y gestionen cupones, administren las cuentas de los comercios y obtengan información sobre los usuarios. Se conecta directamente con la API alojada en https://bj-api.site o en https://github.com/A01801461/beneficio_joven_backend, y utiliza sus endpoints para ofrecer una interfaz de usuario cómoda y amigable que permite administrar la información en la base de datos. Cuenta con seguridad de datos y cifrado, se encuentra alojada de manera segura utilizando el protocolo https.
 
 ### **Cómo probar el panel: **
 
