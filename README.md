@@ -24,10 +24,10 @@ El proyecto busca impulsar la participación juvenil y facilitar el acceso a ben
 2.  **Panel de administración (HTML, CSS, JS)**
     
     -   Código: [https://github.com/A01801461/beneficio_joven_paneles](https://github.com/A01801461/beneficio_joven_paneles)
+  
+    -   Alojado en: [https://beneficiojoven.site](https://beneficiojoven.site)
         
     -   Gestión de usuarios (jóvenes registrados).
-      
-    -   Alojado en: [https://beneficiojoven.site](https://beneficiojoven.site)
         
     -   Alta/edición de comercios.
         
