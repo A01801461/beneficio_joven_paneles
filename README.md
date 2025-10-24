@@ -70,17 +70,18 @@ El proyecto busca impulsar la participación juvenil y facilitar el acceso a ben
 
 ## ⚙️ Detalles del Panel de Administradores
 
-Una aplicación web **construida con HTML, CSS y JavaScript utilizando Express.** Está diseñada para que los administradores suban y gestionen cupones, administren las cuentas de los comercios y obtengan información sobre los usuarios. Se conecta directamente con la API alojada en https://bj-api.site o en https://github.com/A01801461/beneficio_joven_backend, y utiliza sus endpoints para ofrecer una interfaz de usuario cómoda y amigable que permite administrar la información en la base de datos. Aún falta implementar la autenticación y seguridad.
+Una aplicación web **construida con HTML, CSS y JavaScript utilizando Express.** Está diseñada para que los administradores suban y gestionen cupones, administren las cuentas de los comercios y obtengan información sobre los usuarios. Se conecta directamente con la API alojada en https://bj-api.site o en https://github.com/A01801461/beneficio_joven_backend, y utiliza sus endpoints para ofrecer una interfaz de usuario cómoda y amigable que permite administrar la información en la base de datos. Cuenta con seguridad de datos y cifrado, se encuentra alojada de manera segura utilizando el protocolo https.
 
-### **Cómo probar el panel localmente **
+### **Cómo probar el panel: **
 
-1. **Requisitos**:
-   - Instala **Node.js** (v18+).
+1. **En el sitio oficial**:
+   - ve a [https://beneficiojoven.site](https://beneficiojoven.site)
+   - contacta a cualquier integrante del equipo para obtener credenciales validas.
 
-2. **Configuración**:
+2. **De manera local**:
    - Clona este repositorio.
-   - Instala dependencias: `npm install express`.
-   - Corre la aplicacion web: `node app.js`.
+   - Abrelo con VS Code e instala la extension "Live Server".
+   - Presiona click izquierdo sobre cualquier html y presiona "Run with Live Server".
 
 3. **Pruebas**:
    - Navega y explora los datos de nuestra base de datos.
